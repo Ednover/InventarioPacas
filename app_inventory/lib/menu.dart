@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'add.dart';
 import 'buttons.dart';
 
-class NavigationBar extends StatefulWidget {
+class Menu extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _NavigationBar();
+    return _Menu();
   }
 }
 
-class _NavigationBar extends State<NavigationBar> {
+class _Menu extends State<Menu> {
   int indexTap = 1;
   var titleBar = "Inventario";
   final List<Widget> widgetsChildren = [Add(), Buttons(), Add()];
@@ -58,21 +58,21 @@ class _NavigationBar extends State<NavigationBar> {
                 Icons.add_shopping_cart,
                 size: 30,
               ),
-              title: Text("Registro"),
+              label: "Registro",
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.home,
                 size: 30,
               ),
-              title: Text("Inicio"),
+              label: "Inicio",
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.attach_money,
                 size: 30,
               ),
-              title: Text("Venta"),
+              label: "Venta",
             ),
           ],
         ),
