@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'navigationbar.dart';
+import 'menu.dart';
 
 void main() {
   runApp(MyApp());
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: NavigationBar(),
+      home: Menu(),
       debugShowCheckedModeBanner: false,
       //MyHomePage(title: 'Flutter Demo Home Page'),
     );
