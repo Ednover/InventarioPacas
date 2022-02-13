@@ -145,9 +145,15 @@ class _Buttons extends State<Buttons> {
       ),
     );
 
+    var cards = Container(
+      child: Column(
+        children: [],
+      ),
+    );
+
     return Container(
       padding: EdgeInsets.only(
-        top: 50,
+        top: 10,
       ),
       child: Column(
         children: [
