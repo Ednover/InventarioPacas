@@ -29,12 +29,12 @@ class _ItemList extends State<ItemList> {
     );
 
     final amountItem = Container(
-      padding: const EdgeInsets.only(left: 10),
+      padding: const EdgeInsets.only(left: 30),
       child: Text(
         widget.amount.toString(),
         style: TextStyle(fontSize: 16),
       ),
-      alignment: Alignment.topCenter,
+      alignment: Alignment.topLeft,
     );
 
     final item = Container(
@@ -42,6 +42,7 @@ class _ItemList extends State<ItemList> {
         children: <Widget>[
           iconItem,
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(flex: 6, child: titleItem),
               Expanded(flex: 4, child: amountItem)
