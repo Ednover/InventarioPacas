@@ -38,10 +38,6 @@ class _Menu extends State<Menu> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.dehaze),
-          onPressed: () {},
-        ),
         title: Text(titleBar),
         centerTitle: true,
       ),
@@ -49,7 +45,7 @@ class _Menu extends State<Menu> {
       backgroundColor: Color(0xffefefef),
       bottomNavigationBar: Theme(
         data: Theme.of(context)
-            .copyWith(canvasColor: Colors.white, primaryColor: Colors.blue),
+            .copyWith(canvasColor: Colors.white),
         child: BottomNavigationBar(
           onTap: onTapTapped,
           currentIndex: indexTap,

@@ -37,20 +37,41 @@ class _ItemList extends State<ItemList> {
       alignment: Alignment.topLeft,
     );
 
-    final item = Container(
-      child: Row(
-        children: <Widget>[
-          iconItem,
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(flex: 6, child: titleItem),
-              Expanded(flex: 4, child: amountItem)
-            ],
-          )
-        ],
+    final item = Material(
+      child: InkWell(
+      borderRadius: BorderRadius.circular(10),
+      onTap: () {
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text("Se presionó el boton de " + widget.type),
+        ));
+      },
+      child: Ink(
+        padding: EdgeInsets.only(left: 10),
+        width: MediaQuery.of(context).size.width,
+        height: 80,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(
+            color: Colors.black.withAlpha(30),
+            width: 1,
+            style: BorderStyle.solid,
+          ),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Row(
+          children: <Widget>[
+            iconItem,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(flex: 6, child: titleItem),
+                Expanded(flex: 4, child: amountItem)
+              ],
+            )
+          ],
+        ),
       ),
-    );
+    ));
 
     return item;
   }

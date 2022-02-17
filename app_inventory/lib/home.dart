@@ -30,23 +30,7 @@ class Home extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         return Container(
           margin: EdgeInsets.only(left: 10, right: 10),
-          padding: EdgeInsets.only(left: 10),
-          width: MediaQuery.of(context).size.width,
-          height: 80,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(
-              color: Colors.black.withAlpha(30),
-              width: 1,
-              style: BorderStyle.solid,
-            ),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: InkWell(
-            onTap: () {},
-            child: Center(child: items[index]),
-          ),
-        );
+          child: items[index]);
       },
       separatorBuilder: (BuildContext context, int index) => Container(
         width: double.infinity,
