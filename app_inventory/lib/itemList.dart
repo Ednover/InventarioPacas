@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'clientList.dart';
+
 class ItemList extends StatefulWidget {
-  String type;
-  double amount;
+  final String type;
+  final double amount;
 
   ItemList({@required this.type, this.amount}) : super();
 
@@ -41,9 +43,12 @@ class _ItemList extends State<ItemList> {
       child: InkWell(
       borderRadius: BorderRadius.circular(10),
       onTap: () {
-        Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text("Se presionó el boton de " + widget.type),
-        ));
+        Navigator.push(
+          context, 
+          MaterialPageRoute(
+            builder: (context) => selectRoute(widget.type),
+          )
+        );
       },
       child: Ink(
         padding: EdgeInsets.only(left: 10),
@@ -112,3 +117,23 @@ Icon selectIcon(var type) {
   }
   return icon;
 }
+
+Widget selectRoute(var type) {
+    Widget route;
+    switch (type) {
+    case "Vendidas":
+      route = ClientList();
+      break;
+    case "Disponibles":
+      
+      break;
+    case "Movimientos":
+      
+      break;
+    case "Clientes":
+      route = ClientList();
+      break;
+    default:
+  }
+  return route;
+  }

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Buttons extends StatefulWidget {
@@ -14,7 +13,7 @@ class _Buttons extends State<Buttons> {
     setState(() {
       _pressed = !this._pressed;
     });
-    Scaffold.of(context).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: this._pressed
           ? Text("Agregaste a tus Favoritos")
           : Text("Quitaste de tus Favoritos"),
