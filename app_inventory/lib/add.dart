@@ -37,13 +37,16 @@ class DialogRegistro extends StatefulWidget {
 }
 
 class _DialogRegistroState extends State<DialogRegistro> {
-  String dropdownValue;
+  Paca dropdownValue;
+  TextEditingController _precioController = TextEditingController();
+  bool textFieldPrecio = false;
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
         onPressed: () {
           dropdownValue = null;
+          _precioController.text = "";
           return showDialog(
               context: context,
               //El StatefulBuilder es para poder actualizar el state en el AlertDialog
@@ -60,18 +63,25 @@ class _DialogRegistroState extends State<DialogRegistro> {
                                     value: dropdownValue,
                                     items: tipoPacas.map((tipoPaca) {
                                       return DropdownMenuItem(
-                                          value: tipoPaca.nombre,
+                                          value: tipoPaca,
                                           child: Text(tipoPaca.nombre));
                                     }).toList(),
                                     onChanged: (newValue) {
                                       setState(() {
                                         dropdownValue = newValue;
+                                        _precioController.text =
+                                            dropdownValue.precio.toString();
                                       });
                                     }),
                                 TextButton(
                                     onPressed: () {},
                                     child: Text('Añadir categoria')),
                               ]),
+                          TextFormField(
+                            controller: _precioController,
+                            decoration:
+                                const InputDecoration(hintText: 'Precio'),
+                          )
                         ],
                       ),
                       actions: <Widget>[
