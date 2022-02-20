@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'add.dart';
-import 'buttons.dart';
+import 'home.dart';
 
 class Menu extends StatefulWidget {
   @override
@@ -14,7 +13,7 @@ class Menu extends StatefulWidget {
 class _Menu extends State<Menu> {
   int indexTap = 1;
   var titleBar = "Inventario";
-  final List<Widget> widgetsChildren = [Add(), Buttons(), Add()];
+  final List<Widget> widgetsChildren = [Add(), Home(), Add()];
   void onTapTapped(int index) {
     setState(() {
       indexTap = index;
@@ -38,17 +37,14 @@ class _Menu extends State<Menu> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.dehaze),
-          onPressed: () {},
-        ),
         title: Text(titleBar),
         centerTitle: true,
       ),
       body: widgetsChildren[indexTap],
+      backgroundColor: Color(0xffefefef),
       bottomNavigationBar: Theme(
         data: Theme.of(context)
-            .copyWith(canvasColor: Colors.white, primaryColor: Colors.blue),
+            .copyWith(canvasColor: Colors.white),
         child: BottomNavigationBar(
           onTap: onTapTapped,
           currentIndex: indexTap,
