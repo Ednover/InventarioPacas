@@ -1,14 +1,12 @@
-import 'package:app_inventory/client.dart';
+import 'package:app_inventory/client_card.dart';
 import 'package:flutter/material.dart';
 
 class ClientList extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return _ClientList();
-  }
+  State<StatefulWidget> createState() => _ClientList();
 }
 
-class _ClientList extends State<ClientList> {
+class _ClientList extends State<ClientList>{
 
   final List<Client> clients = <Client>[
     Client(name: 'Mario', amount: 20),
@@ -41,7 +39,8 @@ class _ClientList extends State<ClientList> {
       itemBuilder: (BuildContext context, int index) {
         return Container(
           margin: EdgeInsets.only(left: 10, right: 10),
-          child: clients[index]);
+          child: clients[index],
+        );
       },
       separatorBuilder: (BuildContext context, int index) => Container(
         width: double.infinity,

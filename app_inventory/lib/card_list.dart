@@ -1,6 +1,8 @@
+import 'package:app_inventory/available_list.dart';
+import 'package:app_inventory/sold_list.dart';
 import 'package:flutter/material.dart';
 
-import 'clientList.dart';
+import 'client_list.dart';
 
 class ItemList extends StatefulWidget {
   final String type;
@@ -122,10 +124,10 @@ Widget selectRoute(var type) {
     Widget route;
     switch (type) {
     case "Vendidas":
-      route = ClientList();
+      route = SoldList();
       break;
     case "Disponibles":
-      
+      route = AvailableList();
       break;
     case "Movimientos":
       

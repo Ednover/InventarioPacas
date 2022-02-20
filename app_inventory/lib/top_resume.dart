@@ -13,7 +13,7 @@ class TopResume extends StatelessWidget {
         color: Colors.blue,
         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40), bottomRight: Radius.circular(40)),
       ),
-    );  
+    );
 
     final texts = Column(
       crossAxisAlignment: CrossAxisAlignment.center,
