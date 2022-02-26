@@ -1,6 +1,8 @@
 class Paca {
-  String nombre;
-  int precio;
+  String name;
+  double price;
+  int amount;
+  String provider;
 
-  Paca({this.nombre, this.precio});
+  Paca({this.name, this.price, this.amount, this.provider});
 }
