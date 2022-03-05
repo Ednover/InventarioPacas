@@ -1,14 +1,11 @@
 import 'package:app_inventory/paca_card.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'paca.dart';
 
-List<Paca> categoryPacas = [
-  Paca(name: 'Mujer Mixta', price: 8000),
-  Paca(name: 'Deportiva Mixta', price: 10000),
-  Paca(name: 'Sueter', price: 12000)
-];
+List<Paca> categoryPacas = [];
 List<Paca> listPaca = [];
 
 class PacaRegister extends StatefulWidget {
@@ -27,11 +24,24 @@ class _PacaRegister extends State<PacaRegister> {
   BoxDecoration _boxDecorationAlert;
 
   @override
-  void didUpdateWidget(covariant PacaRegister oldWidget) {
-    // TODO: implement didUpdateWidget
-    super.didUpdateWidget(oldWidget);
-    print(listPaca.length);
-    setState(() {});
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCategoryPacas();
+  }
+
+  void getCategoryPacas() async {
+    CollectionReference collectionReference =
+        FirebaseFirestore.instance.collection('Inventory');
+    QuerySnapshot querySnapshot = await collectionReference.get();
+    if (querySnapshot.docs.length > 0) {
+      for (var doc in querySnapshot.docs) {
+        categoryPacas.add(Paca(
+            name: doc.get('name'),
+            price: doc.get('price').toDouble(),
+            provider: doc.get('provider')));
+      }
+    }
   }
 
   @override
