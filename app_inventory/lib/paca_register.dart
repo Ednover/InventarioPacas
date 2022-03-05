@@ -105,35 +105,31 @@ class _PacaRegister extends State<PacaRegister> {
         builder: (context, setState) => AlertDialog(
           title: const Text('Añadir Paca al listado'),
           content: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-                AnimatedContainer(
-                    duration: Duration(seconds: 2),
-                    curve: Curves.fastOutSlowIn,
-                    padding: EdgeInsets.only(left: 5, right: 5),
-                    decoration: _boxDecorationAlert,
-                    child: DropdownButton(
-                        hint: Text('Seleccione una opción'),
-                        value: _dropdownValue,
-                        items: categoryPacas.map((tipoPaca) {
-                          return DropdownMenuItem(
-                              value: tipoPaca, child: Text(tipoPaca.name));
-                        }).toList(),
-                        onChanged: (newValue) {
-                          setState(() {
-                            _dropdownValue = newValue;
-                            _priceController.text =
-                                _dropdownValue.price.toString();
-                            _isEnabledFieldPrice = true;
-                            _boxDecorationAlert = null;
-                            _amountPacas = 1;
-                          });
-                        })),
-                TextButton(
-                  child: Text('Añadir\nCategoria', textAlign: TextAlign.center),
-                  onPressed: () {},
-                ),
-              ]),
+              //DropDownMenu
+              AnimatedContainer(
+                duration: Duration(seconds: 2),
+                curve: Curves.fastOutSlowIn,
+                padding: EdgeInsets.only(left: 5, right: 5),
+                decoration: _boxDecorationAlert,
+                child: DropdownButton(
+                    hint: Text('Seleccione una opción'),
+                    value: _dropdownValue,
+                    items: categoryPacas.map((tipoPaca) {
+                      return DropdownMenuItem(
+                          value: tipoPaca, child: Text(tipoPaca.name));
+                    }).toList(),
+                    onChanged: (newValue) {
+                      setState(() {
+                        _dropdownValue = newValue;
+                        _priceController.text = _dropdownValue.price.toString();
+                        _isEnabledFieldPrice = true;
+                        _boxDecorationAlert = null;
+                        _amountPacas = 1;
+                      });
+                    }),
+              ),
               //TextForm del precio y botones de cantidad
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -221,7 +217,12 @@ class _PacaRegister extends State<PacaRegister> {
                     ),
                   ),
                 ],
-              )
+              ),
+              //TextoButton para añadir nueva categoría
+              TextButton(
+                child: Text('Añadir\nCategoria', textAlign: TextAlign.center),
+                onPressed: () {},
+              ),
             ],
           ),
           actions: <Widget>[
