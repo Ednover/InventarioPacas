@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "24410631696",
+    "project_id": "kalued",
+    "storage_bucket": "kalued.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24410631696:android:a64344d6380e4b73162495",
+        "android_client_info": {
+          "package_name": "com.example.app_inventory"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "24410631696-1pf6ndpeac244kvuu60922s1vot4beoa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgLmPksDQB6H3zyfC7od66Y_TVssF4V4k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "24410631696-1pf6ndpeac244kvuu60922s1vot4beoa.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "24410631696-jtjf59h2454s0bg4r99ameh844e4pf0u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.appInventory"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
