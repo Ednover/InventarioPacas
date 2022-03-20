@@ -1,9 +1,10 @@
-import 'package:app_inventory/paca_card.dart';
+import 'package:app_inventory/forms/category_register.dart';
+import 'package:app_inventory/home/cards/paca_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'paca.dart';
+import '../classes/paca.dart';
 
 List<Paca> categoryPacas = [];
 List<Paca> listPaca = [];
@@ -239,7 +240,13 @@ class _PacaRegister extends State<PacaRegister> {
                 //TextoButton para añadir nueva categoría
                 TextButton(
                   child: Text('Añadir\nCategoria', textAlign: TextAlign.center),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CategoryRegister()));
+                  },
                 ),
               ],
             ),

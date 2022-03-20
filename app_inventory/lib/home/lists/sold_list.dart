@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'paca_card.dart';
+import '../cards/paca_card.dart';
 
 class SoldList extends StatefulWidget {
   @override
@@ -30,20 +30,19 @@ class _SoldList extends State<SoldList> {
         title: const Text('Pacas vendidas'),
       ),
       body: ListView.separated(
-      padding:
-          EdgeInsets.only(top: 15, bottom: 15),
-      itemBuilder: (BuildContext context, int index) {
-        return Container(
-          margin: EdgeInsets.only(left: 10, right: 10),
-          child: pacas[index],
-        );
-      },
-      separatorBuilder: (BuildContext context, int index) => Container(
-        width: double.infinity,
-        height: 10,
+        padding: EdgeInsets.only(top: 15, bottom: 15),
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            margin: EdgeInsets.only(left: 10, right: 10),
+            child: pacas[index],
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) => Container(
+          width: double.infinity,
+          height: 10,
+        ),
+        itemCount: pacas.length,
       ),
-      itemCount: pacas.length,
-    ),
     );
   }
 }
