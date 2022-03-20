@@ -1,10 +1,12 @@
+=======
+import 'package:app_inventory/classes_info/client_info.dart';
 import 'package:flutter/material.dart';
 
-class Client extends StatefulWidget {
+class ClientCard extends StatefulWidget {
   final String name;
   final double amount;
 
-  Client({@required this.name, this.amount}) : super();
+  ClientCard({@required this.name, this.amount}) : super();
 
   @override
   State<StatefulWidget> createState() {
@@ -12,7 +14,7 @@ class Client extends StatefulWidget {
   }
 }
 
-class _Client extends State<Client> {
+class _Client extends State<ClientCard> {
   @override
   Widget build(BuildContext context) {
     final nameClient = Container(
@@ -43,8 +45,9 @@ class _Client extends State<Client> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  //builder: (context) => selectRoute(widget.type),
-                  ));
+                builder: (context) =>
+                    ClientInfo(name: widget.name, amount: widget.amount),
+              ));
         },
         child: Ink(
           padding: EdgeInsets.only(left: 10),
