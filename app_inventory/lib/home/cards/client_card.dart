@@ -1,4 +1,3 @@
-=======
 import 'package:app_inventory/classes_info/client_info.dart';
 import 'package:flutter/material.dart';
 
