@@ -241,6 +241,7 @@ class _PacaRegister extends State<PacaRegister> {
                 TextButton(
                   child: Text('Añadir\nCategoria', textAlign: TextAlign.center),
                   onPressed: () {
+                    categoryPacas = [];
                     Navigator.pop(context);
                     Navigator.push(
                         context,
