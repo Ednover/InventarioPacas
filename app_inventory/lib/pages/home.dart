@@ -1,5 +1,5 @@
-import 'top_resume.dart';
-import 'card_list.dart';
+import '../home/top_resume.dart';
+import '../home/lists/home_list.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {

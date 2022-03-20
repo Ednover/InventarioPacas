@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'add.dart';
-import 'home.dart';
+import 'pages/add.dart';
+import 'pages/home.dart';
 
 class Menu extends StatefulWidget {
   @override

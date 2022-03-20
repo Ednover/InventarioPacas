@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'paca_card.dart';
+import '../cards/paca_card.dart';
 
 class AvailableList extends StatefulWidget {
 

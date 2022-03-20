@@ -1,8 +1,8 @@
-import 'package:app_inventory/available_list.dart';
-import 'package:app_inventory/sold_list.dart';
+import 'package:app_inventory/home/lists/available_list.dart';
+import 'package:app_inventory/home/lists/sold_list.dart';
 import 'package:flutter/material.dart';
 
-import 'client_list.dart';
+import '../../lists/client_list.dart';
 
 class ItemList extends StatefulWidget {
   final String type;
