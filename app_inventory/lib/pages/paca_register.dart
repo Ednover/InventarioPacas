@@ -12,7 +12,6 @@ List<Paca> listPaca = [];
 class PacaRegister extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _PacaRegister();
   }
 }
@@ -26,7 +25,6 @@ class _PacaRegister extends State<PacaRegister> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -49,7 +47,6 @@ class _PacaRegister extends State<PacaRegister> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Column(
       children: [
         Ink(
@@ -61,7 +58,7 @@ class _PacaRegister extends State<PacaRegister> {
           child: IconButton(
             icon: Icon(Icons.add),
             onPressed: () async {
-              final itemPaca = await showDialogAddCart();
+              final Paca itemPaca = await showDialogAddCart();
               if (itemPaca == null) return;
               setState(() {
                 if (listPaca.isEmpty) {
@@ -69,17 +66,16 @@ class _PacaRegister extends State<PacaRegister> {
                 } else {
                   int indexMatch = null;
                   for (int i = 0; i < listPaca.length; i++) {
-                    print(listPaca[i].name + " == " + itemPaca.name);
-                    if (listPaca[i].name == itemPaca.name) {
+                    print(listPaca[i].getName() + " == " + itemPaca.getName());
+                    if (listPaca[i].getName() == itemPaca.getName()) {
                       indexMatch = i;
                     }
                   }
                   if (indexMatch == null) {
                     listPaca.add(itemPaca);
                   } else {
-                    listPaca[indexMatch].amount =
-                        listPaca[indexMatch].amount + itemPaca.amount;
-                    print(listPaca[indexMatch].amount);
+                    listPaca[indexMatch].setAmount(listPaca[indexMatch].getAmount() + itemPaca.getAmount());
+                    print(listPaca[indexMatch].getAmount());
                   }
                 }
               });
@@ -98,8 +94,12 @@ class _PacaRegister extends State<PacaRegister> {
                       right: 10,
                     ),
                     child: PacaCard(
-                      name: listPaca[index].name,
-                      price: listPaca[index].price,
+                      paca: new Paca(
+                        name: listPaca[index].getName(), 
+                        amount: 0, 
+                        price: listPaca[index].getPrice(), 
+                        provider: "",
+                      )
                     ),
                   )),
         ),
@@ -134,13 +134,13 @@ class _PacaRegister extends State<PacaRegister> {
                       value: _dropdownValue,
                       items: categoryPacas.map((tipoPaca) {
                         return DropdownMenuItem(
-                            value: tipoPaca, child: Text(tipoPaca.name));
+                            value: tipoPaca, child: Text(tipoPaca.getName()));
                       }).toList(),
                       onChanged: (newValue) {
                         setState(() {
                           _dropdownValue = newValue;
                           _priceController.text =
-                              _dropdownValue.price.toString();
+                              _dropdownValue.getPrice().toString();
                           _isEnabledFieldPrice = true;
                           _boxDecorationAlert = null;
                           _amountPacas = 1;
@@ -271,7 +271,7 @@ class _PacaRegister extends State<PacaRegister> {
                     });
                   } else {
                     itemPaca = Paca(
-                        name: _dropdownValue.name,
+                        name: _dropdownValue.getName(),
                         price: double.parse(_priceController.text),
                         amount: _amountPacas);
                     categoryPacas = [];
