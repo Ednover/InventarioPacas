@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
-class PacaCard extends StatefulWidget {
-  final String name;
-  final double price;
+import '../../classes/paca.dart';
+import '../../classes_info/paca_info.dart';
 
-  PacaCard({@required this.name, this.price}) : super();
+class PacaCard extends StatefulWidget {
+  final Paca paca;
+
+  PacaCard({@required this.paca}) : super();
 
   @override
   State<PacaCard> createState() => _PacaCard();
@@ -16,7 +18,7 @@ class _PacaCard extends State<PacaCard> {
     final namePaca = Container(
       padding: const EdgeInsets.only(left: 10),
       child: Text(
-        widget.name,
+        widget.paca.getName(),
         style: TextStyle(fontSize: 20),
       ),
       alignment: Alignment.centerLeft,
@@ -25,7 +27,7 @@ class _PacaCard extends State<PacaCard> {
     final pricePaca = Container(
       padding: const EdgeInsets.only(left: 10),
       child: Text(
-        widget.price.toString(),
+        widget.paca.getPrice().toString(),
         style: TextStyle(fontSize: 16),
       ),
       alignment: Alignment.topLeft,
@@ -36,13 +38,14 @@ class _PacaCard extends State<PacaCard> {
         borderRadius: BorderRadius.circular(10),
         onTap: () {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text("Se presionó el boton de " + widget.name),
+            content: Text("Se presionó el boton de " + widget.paca.getName()),
           ));
           Navigator.push(
               context,
               MaterialPageRoute(
-                  //builder: (context) => selectRoute(widget.type),
-                  ));
+                  builder: (context) =>
+                    PacaInfo(paca: widget.paca,),
+              ));
         },
         child: Ink(
           padding: EdgeInsets.only(left: 10),

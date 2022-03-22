@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
-class ClientInfo extends StatefulWidget {
-  final String name;
-  final double amount;
+import '../classes/paca.dart';
 
-  ClientInfo({@required this.name, this.amount}) : super();
+class PacaInfo extends StatefulWidget {
+  Paca paca;
+
+
+  PacaInfo({@required this.paca}) : super();
 
   @override
   State<StatefulWidget> createState() {
-    return _ClientInfo();
+    return _PacaInfo();
   }
 }
 
-class _ClientInfo extends State<ClientInfo> {
+class _PacaInfo extends State<PacaInfo> {
   var isOnlyRead = true;
 
   var isModeEdit = false;
@@ -92,7 +94,7 @@ class _ClientInfo extends State<ClientInfo> {
             }
           },
         ),
-        title: const Text("Cliente", textAlign: TextAlign.center),
+        title: const Text("Pacas", textAlign: TextAlign.center),
         actions: <Widget>[
           Visibility(
             child: iconEdit,
@@ -109,10 +111,10 @@ class _ClientInfo extends State<ClientInfo> {
         child: Column(
           children: <Widget>[
             TextFormField(
-              initialValue: widget.name,
+              initialValue: widget.paca.getName(),
               style: TextStyle(height: 2),
               decoration: InputDecoration(
-                labelText: "Nombre",
+                labelText: "Paca",
                 labelStyle: TextStyle(fontSize: 20, color: colorLabel),
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: colorOff),
@@ -124,7 +126,23 @@ class _ClientInfo extends State<ClientInfo> {
               readOnly: isOnlyRead,
             ),
             TextFormField(
-              initialValue: widget.amount.toString(),
+              initialValue: widget.paca.getPrice().toString(),
+              style: TextStyle(height: 2),
+              decoration: InputDecoration(
+                labelText: "Precio",
+                labelStyle: TextStyle(fontSize: 20, color: colorLabel),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: colorOff),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: colorField),
+                ),
+              ),
+              readOnly: isOnlyRead,
+              keyboardType: TextInputType.number,
+            ),
+            TextFormField(
+              initialValue: widget.paca.getAmount().toString(),
               style: TextStyle(height: 2),
               decoration: InputDecoration(
                 labelText: "Cantidad",
@@ -138,6 +156,21 @@ class _ClientInfo extends State<ClientInfo> {
               ),
               readOnly: isOnlyRead,
               keyboardType: TextInputType.number,
+            ),
+            TextFormField(
+              initialValue: widget.paca.getProvider(),
+              style: TextStyle(height: 2),
+              decoration: InputDecoration(
+                labelText: "Provedor",
+                labelStyle: TextStyle(fontSize: 20, color: colorLabel),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: colorOff),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: colorField),
+                ),
+              ),
+              readOnly: isOnlyRead,
             ),
           ],
         ),
