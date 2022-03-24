@@ -8,9 +8,7 @@ class ClientCard extends StatefulWidget {
   ClientCard({@required this.name, this.amount}) : super();
 
   @override
-  State<StatefulWidget> createState() {
-    return _Client();
-  }
+  State<StatefulWidget> createState() => _Client();
 }
 
 class _Client extends State<ClientCard> {
@@ -35,18 +33,17 @@ class _Client extends State<ClientCard> {
     );
 
     final client = Material(
+      borderRadius: BorderRadius.circular(10),
       child: InkWell(
         borderRadius: BorderRadius.circular(10),
         onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text("Se presionó el boton de " + widget.name),
-          ));
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    ClientInfo(name: widget.name, amount: widget.amount),
-              ));
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                ClientInfo(name: widget.name, amount: widget.amount),
+            )
+          );
         },
         child: Ink(
           padding: EdgeInsets.only(left: 10),

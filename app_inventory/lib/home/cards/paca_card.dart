@@ -34,18 +34,17 @@ class _PacaCard extends State<PacaCard> {
     );
 
     final paca = Material(
+      borderRadius: BorderRadius.circular(10),
       child: InkWell(
         borderRadius: BorderRadius.circular(10),
         onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text("Se presionó el boton de " + widget.paca.getName()),
-          ));
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                    PacaInfo(paca: widget.paca,),
-              ));
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                PacaInfo(paca: widget.paca,),
+            )
+          );
         },
         child: Ink(
           padding: EdgeInsets.only(left: 10),

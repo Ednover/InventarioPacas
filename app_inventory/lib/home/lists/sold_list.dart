@@ -10,7 +10,7 @@ class SoldList extends StatefulWidget {
 
 class _SoldList extends State<SoldList> {
   final List<PacaCard> pacas = <PacaCard>[
-    PacaCard(paca: new Paca(name: 'Niño mixto', amount: 0, price: 3000, provider: "",)),
+    PacaCard(paca: new Paca(name: 'Niño mixto', price: 3000)),
     PacaCard(paca: new Paca(name: 'Hombre', amount: 0, price: 5000, provider: "",)),
     PacaCard(paca: new Paca(name: 'Mujer', amount: 0, price: 2000, provider: "",)),
     PacaCard(paca: new Paca(name: 'Deportivo mixto', amount: 0, price: 7000, provider: "",)),
@@ -30,6 +30,7 @@ class _SoldList extends State<SoldList> {
       appBar: AppBar(
         title: const Text('Pacas vendidas'),
       ),
+      backgroundColor: Color(0xffefefef),
       body: ListView.separated(
       padding:
           EdgeInsets.only(top: 15, bottom: 15),
