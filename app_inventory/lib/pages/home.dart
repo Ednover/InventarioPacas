@@ -17,7 +17,6 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin{
     ItemList(type: 'Disponibles', amount: 20),
     ItemList(type: 'Clientes', amount: 20),
     ItemList(type: 'Movimientos', amount: 20),
-    ItemList(type: 'Vendidas', amount: 30),
   ];
 
   AnimationController _controller;

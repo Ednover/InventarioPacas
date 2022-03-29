@@ -8,8 +8,8 @@ class Paca {
   //Paca(this._name, this._price, this._amount, this._provider,);
   Paca({String name, double price, int amount, String provider,}){
     this._name = name;
-    this._price = (price!=null) ? price : 0;
-    this._amount = (amount!=null) ? amount : 0;
+    this._price = (price) ?? 0;
+    this._amount = (amount) ?? 0;
     this._provider = provider;
   }
 
