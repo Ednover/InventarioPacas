@@ -18,7 +18,7 @@ class _Client extends State<ClientCard> {
       padding: const EdgeInsets.only(left: 10),
       child: Text(
         widget.name,
-        style: TextStyle(fontSize: 20),
+        style: TextStyle(fontSize: 22),
       ),
       alignment: Alignment.centerLeft,
     );
@@ -27,7 +27,7 @@ class _Client extends State<ClientCard> {
       padding: const EdgeInsets.only(left: 10),
       child: Text(
         widget.amount.toString(),
-        style: TextStyle(fontSize: 16),
+        style: TextStyle(fontSize: 18),
       ),
       alignment: Alignment.topLeft,
     );
