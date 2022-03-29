@@ -49,15 +49,7 @@ class _ItemList extends State<ItemList> {
         Navigator.push(
           context, 
           MaterialPageRoute(
-            builder: (context) => 
-            Scaffold(
-              appBar: AppBar(
-                centerTitle: true,
-                title: const Text("Clientes"),
-              ),
-              backgroundColor: Color(0xffefefef),
-              body: selectRoute(widget.type),
-            ),
+            builder: (context) => selectRoute(widget.type),
           )
         );
       },
@@ -142,7 +134,14 @@ Widget selectRoute(var type) {
       
       break;
     case "Clientes":
-      route = ClientList();
+      route = Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text("Clientes"),
+        ),
+        backgroundColor: Color(0xffefefef),
+        body: ClientList(),
+      );
       break;
     default:
   }
