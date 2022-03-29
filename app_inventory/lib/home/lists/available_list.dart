@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../classes/paca.dart';
@@ -11,20 +12,10 @@ class AvailableList extends StatefulWidget {
 
 class _AvailableList extends State<AvailableList> {
 
-    final List<PacaCard> pacas = <PacaCard>[
-    PacaCard(paca: new Paca(name: 'Niño mixto', amount: 0, price: 3000, provider: "",)),
-    PacaCard(paca: new Paca(name: 'Hombre', amount: 0, price: 5000, provider: "",)),
-    PacaCard(paca: new Paca(name: 'Mujer', amount: 0, price: 2000, provider: "",)),
-    PacaCard(paca: new Paca(name: 'Deportivo mixto', amount: 0, price: 7000, provider: "",)),
-    PacaCard(paca: new Paca(name: 'Ropa interior mixto', amount: 0, price: 6000, provider: "",)),
-    PacaCard(paca: new Paca(name: 'Shorts y cargo', amount: 0, price: 5500, provider: "",)),
-    PacaCard(paca: new Paca(name: 'Hombre mixto', amount: 0, price: 5500, provider: "",)),
-    PacaCard(paca: new Paca(name: 'Mujer mixto', amount: 0, price: 5500, provider: "",)),
-    PacaCard(paca: new Paca(name: 'Deportivo hombre', amount: 0, price: 5500, provider: "",)),
-    PacaCard(paca: new Paca(name: 'Deportivo mujer', amount: 0, price: 5500, provider: "",)),
-    PacaCard(paca: new Paca(name: 'Ropa invierno', amount: 0, price: 5500, provider: "",)),
-    PacaCard(paca: new Paca(name: 'Ropa playa', amount: 0, price: 5500, provider: "",)),
-  ];
+  @override
+  void initState() {
+    super.initState();    
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,21 +23,33 @@ class _AvailableList extends State<AvailableList> {
       appBar: AppBar(
         title: const Text('Pacas vendidas'),
       ),
-      body: ListView.separated(
-      padding:
-          EdgeInsets.only(top: 15, bottom: 15),
-      itemBuilder: (BuildContext context, int index) {
-        return Container(
-          margin: EdgeInsets.only(left: 10, right: 10),
-          child: pacas[index],
-        );
-      },
-      separatorBuilder: (BuildContext context, int index) => Container(
-        width: double.infinity,
-        height: 10,
-      ),
-      itemCount: pacas.length,
-    ),
+      backgroundColor: Color(0xffefefef),
+      body: StreamBuilder(
+          stream: FirebaseFirestore.instance.collection('Inventory').where('amount', isGreaterThan: 0).snapshots(),
+          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) return Container(height: MediaQuery.of(context).size.height, width: MediaQuery.of(context).size.width, alignment: Alignment.center, child: CircularProgressIndicator());
+              return ListView.separated(
+                padding:
+                    EdgeInsets.only(top: 15, bottom: 15),
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    margin: EdgeInsets.only(left: 10, right: 10),
+                    child: PacaCard(paca: new Paca(
+                      name: snapshot.data.docs[index].get('name'),
+                      amount: snapshot.data.docs[index].get('amount').toInt(), 
+                      price: snapshot.data.docs[index].get('price').toDouble(), 
+                      provider: snapshot.data.docs[index].get('provider'),),
+                    ),
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) => Container(
+                  width: double.infinity,
+                  height: 10,
+                ),
+                itemCount: snapshot.data.docs.length,
+              );
+            }
+          ),
     );
   }
 }
