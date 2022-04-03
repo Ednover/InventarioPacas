@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dialog_add_cart.dart';
-import 'paca.dart';
 
 class Add extends StatelessWidget {
   @override
@@ -15,7 +13,10 @@ class Add extends StatelessWidget {
             color: Colors.lightBlue,
             shape: CircleBorder(),
           ),
-          child: DialogRegistro(),
+          child: IconButton(
+            icon: Icon(Icons.check),
+            onPressed: () {},
+          ),
         ),
         Expanded(
           child: ListView(
