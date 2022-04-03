@@ -1,4 +1,5 @@
 class Paca {
+  String _id;
   String _name;
   String _label;
   double _price;
@@ -6,17 +7,23 @@ class Paca {
   String _provider;
 
   Paca({
+    String id,
     String name,
     String label,
     double price,
     int amount,
     String provider,
   }) {
+    this._id = id;
     this._name = name;
     this._label = label;
     this._price = (price) ?? 0;
     this._amount = (amount) ?? 0;
     this._provider = provider;
+  }
+
+  String getId() {
+    return this._id;
   }
 
   String getName() {
@@ -37,6 +44,10 @@ class Paca {
 
   String getProvider() {
     return this._provider;
+  }
+
+  void setId(String id) {
+    this._id = id;
   }
 
   void setName(String name) {
