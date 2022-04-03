@@ -69,17 +69,17 @@ class _PacaRegister extends State<PacaRegister> {
                 } else {
                   int indexMatch = null;
                   for (int i = 0; i < listPaca.length; i++) {
-                    print(listPaca[i].name + " == " + itemPaca.name);
-                    if (listPaca[i].name == itemPaca.name) {
+                    print(listPaca[i].getName() + " == " + itemPaca.name);
+                    if (listPaca[i].getName() == itemPaca.name) {
                       indexMatch = i;
                     }
                   }
                   if (indexMatch == null) {
                     listPaca.add(itemPaca);
                   } else {
-                    listPaca[indexMatch].amount =
-                        listPaca[indexMatch].amount + itemPaca.amount;
-                    print(listPaca[indexMatch].amount);
+                    listPaca[indexMatch].setAmount(
+                        listPaca[indexMatch].getAmount() + itemPaca.amount);
+                    print(listPaca[indexMatch].getAmount());
                   }
                 }
               });
@@ -98,8 +98,8 @@ class _PacaRegister extends State<PacaRegister> {
                       right: 10,
                     ),
                     child: PacaCard(
-                      name: listPaca[index].name,
-                      price: listPaca[index].price,
+                      name: listPaca[index].getName(),
+                      price: listPaca[index].getPrice(),
                     ),
                   )),
         ),
@@ -134,13 +134,13 @@ class _PacaRegister extends State<PacaRegister> {
                       value: _dropdownValue,
                       items: categoryPacas.map((tipoPaca) {
                         return DropdownMenuItem(
-                            value: tipoPaca, child: Text(tipoPaca.name));
+                            value: tipoPaca, child: Text(tipoPaca.getName()));
                       }).toList(),
                       onChanged: (newValue) {
                         setState(() {
                           _dropdownValue = newValue;
                           _priceController.text =
-                              _dropdownValue.price.toString();
+                              _dropdownValue.getPrice().toString();
                           _isEnabledFieldPrice = true;
                           _boxDecorationAlert = null;
                           _amountPacas = 1;
@@ -192,9 +192,7 @@ class _PacaRegister extends State<PacaRegister> {
                                 icon: Icon(Icons.remove),
                                 onPressed: () {
                                   setState(() {
-                                    (_amountPacas > 1)
-                                        ? _amountPacas--
-                                        : print('');
+                                    if (_amountPacas > 1) _amountPacas--;
                                   });
                                 },
                                 color: Colors.black,
@@ -241,6 +239,7 @@ class _PacaRegister extends State<PacaRegister> {
                 TextButton(
                   child: Text('Añadir\nCategoria', textAlign: TextAlign.center),
                   onPressed: () {
+                    categoryPacas = [];
                     Navigator.pop(context);
                     Navigator.push(
                         context,
@@ -271,7 +270,7 @@ class _PacaRegister extends State<PacaRegister> {
                     });
                   } else {
                     itemPaca = Paca(
-                        name: _dropdownValue.name,
+                        name: _dropdownValue.getName(),
                         price: double.parse(_priceController.text),
                         amount: _amountPacas);
                     categoryPacas = [];
