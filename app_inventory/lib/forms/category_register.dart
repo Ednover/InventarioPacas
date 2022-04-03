@@ -224,10 +224,11 @@ class _CategoryRegisterState extends State<CategoryRegister> {
           content: const Text('¿Seguro que desea registrar esta categoría?'),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context, 'Cancel'),
               child: const Text('No'),
+              onPressed: () => Navigator.pop(context, 'Cancel'),
             ),
             TextButton(
+              child: const Text('Si'),
               onPressed: () {
                 CollectionReference collectionReference;
                 if (enableLabelTextForm) {
@@ -258,7 +259,6 @@ class _CategoryRegisterState extends State<CategoryRegister> {
                 Navigator.pop(context, 'OK');
                 Navigator.pop(context);
               },
-              child: const Text('Si'),
             ),
           ],
         ),
