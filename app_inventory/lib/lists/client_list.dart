@@ -6,8 +6,7 @@ class ClientList extends StatefulWidget {
   State<StatefulWidget> createState() => _ClientList();
 }
 
-class _ClientList extends State<ClientList>{
-
+class _ClientList extends State<ClientList> {
   final List<ClientCard> clients = <ClientCard>[
     ClientCard(name: 'Mario', amount: 20),
     ClientCard(name: 'Ana', amount: 20),
@@ -28,26 +27,19 @@ class _ClientList extends State<ClientList>{
 
   @override
   Widget build(BuildContext context) {
-    
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Clientes'),
-      ),
-      body: ListView.separated(
-      padding:
-          EdgeInsets.only(top: 15, bottom: 15),
-      itemBuilder: (BuildContext context, int index) {
-        return Container(
-          margin: EdgeInsets.only(left: 10, right: 10),
-          child: clients[index],
-        );
-      },
-      separatorBuilder: (BuildContext context, int index) => Container(
-        width: double.infinity,
-        height: 10,
-      ),
-      itemCount: clients.length,
-    ),
-    );
+    return ListView.separated(
+        padding: EdgeInsets.only(top: 15, bottom: 15),
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            margin: EdgeInsets.only(left: 10, right: 10),
+            child: clients[index],
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) => Container(
+          width: double.infinity,
+          height: 10,
+        ),
+        itemCount: clients.length,
+      );
   }
 }

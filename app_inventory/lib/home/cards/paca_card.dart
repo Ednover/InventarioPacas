@@ -19,7 +19,7 @@ class _PacaCard extends State<PacaCard> {
       padding: const EdgeInsets.only(left: 10),
       child: Text(
         widget.paca.getName(),
-        style: TextStyle(fontSize: 20),
+        style: TextStyle(fontSize: 22),
       ),
       alignment: Alignment.centerLeft,
     );
@@ -28,24 +28,32 @@ class _PacaCard extends State<PacaCard> {
       padding: const EdgeInsets.only(left: 10),
       child: Text(
         widget.paca.getPrice().toString(),
-        style: TextStyle(fontSize: 16),
+        style: TextStyle(fontSize: 18),
       ),
       alignment: Alignment.topLeft,
     );
 
+    final amountPaca = Container(
+      padding: const EdgeInsets.only(right: 20),
+      child: Text(
+        widget.paca.getAmount().toString(),
+        style: TextStyle(fontSize: 32),
+      ),
+      alignment: Alignment.center,
+    );
+
     final paca = Material(
+      borderRadius: BorderRadius.circular(10),
       child: InkWell(
         borderRadius: BorderRadius.circular(10),
         onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text("Se presionó el boton de " + widget.paca.getName()),
-          ));
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                    PacaInfo(paca: widget.paca,),
-              ));
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                PacaInfo(paca: widget.paca,),
+            )
+          );
         },
         child: Ink(
           padding: EdgeInsets.only(left: 10),
@@ -61,6 +69,7 @@ class _PacaCard extends State<PacaCard> {
             borderRadius: BorderRadius.circular(10),
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +77,8 @@ class _PacaCard extends State<PacaCard> {
                   Expanded(flex: 6, child: namePaca),
                   Expanded(flex: 4, child: pricePaca)
                 ],
-              )
+              ),
+              amountPaca,
             ],
           ),
         ),

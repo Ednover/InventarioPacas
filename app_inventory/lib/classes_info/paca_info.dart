@@ -5,7 +5,6 @@ import '../classes/paca.dart';
 class PacaInfo extends StatefulWidget {
   Paca paca;
 
-
   PacaInfo({@required this.paca}) : super();
 
   @override
@@ -62,6 +61,107 @@ class _PacaInfo extends State<PacaInfo> {
 
     barIcon = iconEdit;
 
+    void alertEditOn (){
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Alerta'),
+          content: const Text('¿Seguro que desea salir sin guardar?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Cancel'),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context, 'OK');
+                Navigator.pop(context);
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    var labelName = TextFormField(
+      initialValue: widget.paca.getName(),
+      style: TextStyle(height: 2),
+      decoration: InputDecoration(
+        labelText: "Paca",
+        labelStyle: TextStyle(fontSize: 20, color: colorLabel),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: colorOff),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: colorField),
+        ),
+      ),
+      readOnly: isOnlyRead,
+    );
+
+    var labelPrice = TextFormField(
+      initialValue: widget.paca.getPrice().toString(),
+      style: TextStyle(height: 2),
+      decoration: InputDecoration(
+        labelText: "Precio",
+        labelStyle: TextStyle(fontSize: 20, color: colorLabel),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: colorOff),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: colorField),
+        ),
+      ),
+      readOnly: isOnlyRead,
+      keyboardType: TextInputType.number,
+    );
+
+    var labelAmount = TextFormField(
+      initialValue: widget.paca.getAmount().toString(),
+      style: TextStyle(height: 2),
+      decoration: InputDecoration(
+        labelText: "Cantidad",
+        labelStyle: TextStyle(fontSize: 20, color: colorLabel),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: colorOff),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: colorField),
+        ),
+      ),
+      readOnly: isOnlyRead,
+      keyboardType: TextInputType.number,
+    ); 
+
+    var labelProvider = TextFormField(
+      initialValue: widget.paca.getProvider(),
+      style: TextStyle(height: 2),
+      decoration: InputDecoration(
+        labelText: "Provedor",
+        labelStyle: TextStyle(fontSize: 20, color: colorLabel),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: colorOff),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: colorField),
+        ),
+      ),
+      readOnly: isOnlyRead,
+    );
+
+    var containerInfo = Container(
+      padding: EdgeInsets.only(top: 5, left: 10, right: 10),
+      child: Column(
+        children: <Widget>[
+          labelName,
+          labelPrice,
+          labelAmount,
+          labelProvider,
+        ],
+      ),
+    );
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -69,26 +169,7 @@ class _PacaInfo extends State<PacaInfo> {
           color: Colors.white,
           onPressed: () {
             if (isModeEdit) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                  title: const Text('Alerta'),
-                  content: const Text('¿Seguro que desea salir sin guardar?'),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, 'Cancel'),
-                      child: const Text('Cancel'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context, 'OK');
-                        Navigator.pop(context);
-                      },
-                      child: const Text('OK'),
-                    ),
-                  ],
-                ),
-              );
+              alertEditOn();
             } else {
               Navigator.pop(context);
             }
@@ -106,75 +187,7 @@ class _PacaInfo extends State<PacaInfo> {
           ),
         ],
       ),
-      body: Container(
-        padding: EdgeInsets.only(top: 5, left: 10, right: 10),
-        child: Column(
-          children: <Widget>[
-            TextFormField(
-              initialValue: widget.paca.getName(),
-              style: TextStyle(height: 2),
-              decoration: InputDecoration(
-                labelText: "Paca",
-                labelStyle: TextStyle(fontSize: 20, color: colorLabel),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: colorOff),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: colorField),
-                ),
-              ),
-              readOnly: isOnlyRead,
-            ),
-            TextFormField(
-              initialValue: widget.paca.getPrice().toString(),
-              style: TextStyle(height: 2),
-              decoration: InputDecoration(
-                labelText: "Precio",
-                labelStyle: TextStyle(fontSize: 20, color: colorLabel),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: colorOff),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: colorField),
-                ),
-              ),
-              readOnly: isOnlyRead,
-              keyboardType: TextInputType.number,
-            ),
-            TextFormField(
-              initialValue: widget.paca.getAmount().toString(),
-              style: TextStyle(height: 2),
-              decoration: InputDecoration(
-                labelText: "Cantidad",
-                labelStyle: TextStyle(fontSize: 20, color: colorLabel),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: colorOff),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: colorField),
-                ),
-              ),
-              readOnly: isOnlyRead,
-              keyboardType: TextInputType.number,
-            ),
-            TextFormField(
-              initialValue: widget.paca.getProvider(),
-              style: TextStyle(height: 2),
-              decoration: InputDecoration(
-                labelText: "Provedor",
-                labelStyle: TextStyle(fontSize: 20, color: colorLabel),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: colorOff),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: colorField),
-                ),
-              ),
-              readOnly: isOnlyRead,
-            ),
-          ],
-        ),
-      ),
+      body: containerInfo,
     );
   }
 }

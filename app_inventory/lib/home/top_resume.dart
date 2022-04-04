@@ -16,7 +16,7 @@ class TopResume extends StatelessWidget {
     );
 
     final texts = Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment. center,
       children: [
         Text(
           "\$$ganacias",

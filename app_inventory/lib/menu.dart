@@ -1,3 +1,4 @@
+import 'package:app_inventory/pages/paca_sale.dart';
 import 'package:flutter/material.dart';
 
 import 'pages/paca_register.dart';
@@ -13,7 +14,7 @@ class Menu extends StatefulWidget {
 class _Menu extends State<Menu> {
   int indexTap = 1;
   var titleBar = "Inventario";
-  final List<Widget> widgetsChildren = [PacaRegister(), Home(), PacaRegister()];
+  final List<Widget> widgetsChildren = [PacaRegister(), Home(), PacaSale()];
   void onTapTapped(int index) {
     setState(() {
       indexTap = index;

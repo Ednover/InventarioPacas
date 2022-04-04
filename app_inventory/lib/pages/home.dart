@@ -1,6 +1,6 @@
 import '../home/top_resume.dart';
 
-import '../home/lists/home_list.dart';
+import '../lists/home_list.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -13,7 +13,7 @@ class Home extends StatefulWidget {
 
 class _Home extends State<Home> with SingleTickerProviderStateMixin{
   final List<ItemList> items = <ItemList>[
-    ItemList(type: 'Vendidas', amount: 20),
+    ItemList(type: 'Vendidas', amount: 30),
     ItemList(type: 'Disponibles', amount: 20),
     ItemList(type: 'Clientes', amount: 20),
     ItemList(type: 'Movimientos', amount: 20),
@@ -27,7 +27,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin{
     super.initState();
 
     _controller = AnimationController(
-      duration: Duration(milliseconds: 800),
+      duration: Duration(milliseconds: 650),
       vsync: this,
     );
 
@@ -70,7 +70,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin{
         clipBehavior: Clip.antiAlias,
         child: listaOpciones,
         decoration: BoxDecoration(
-          color: Color(0xffefef1ef),
+          color: Color(0xffefefef),
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(30),
               topRight: Radius.circular(30)
