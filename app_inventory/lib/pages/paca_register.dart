@@ -22,6 +22,7 @@ class _PacaRegister extends State<PacaRegister> {
   bool _isEnabledFieldPrice;
   int _amountPacas;
   BoxDecoration _boxDecorationAlert;
+  bool isUploadEnabled = false;
 
   @override
   void initState() {
@@ -35,6 +36,7 @@ class _PacaRegister extends State<PacaRegister> {
     if (querySnapshot.docs.length > 0) {
       for (var doc in querySnapshot.docs) {
         categoryPacas.add(Paca(
+            id: doc.id,
             name: doc.get('name'),
             price: doc.get('price').toDouble(),
             provider: doc.get('provider')));
@@ -47,40 +49,60 @@ class _PacaRegister extends State<PacaRegister> {
 
   @override
   Widget build(BuildContext context) {
+    (listPaca.isNotEmpty) ? isUploadEnabled = true : isUploadEnabled = false;
     return Column(
       children: [
-        Ink(
-          padding: EdgeInsets.only(top: 10, bottom: 10),
-          decoration: const ShapeDecoration(
-            color: Colors.lightBlue,
-            shape: CircleBorder(),
-          ),
-          child: IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () async {
-              final Paca itemPaca = await showDialogAddCart();
-              if (itemPaca == null) return;
-              setState(() {
-                if (listPaca.isEmpty) {
-                  listPaca.add(itemPaca);
-                } else {
-                  int indexMatch = null;
-                  for (int i = 0; i < listPaca.length; i++) {
-                    print(listPaca[i].getName() + " == " + itemPaca.getName());
-                    if (listPaca[i].getName() == itemPaca.getName()) {
-                      indexMatch = i;
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Ink(
+              padding: EdgeInsets.only(top: 10, bottom: 10),
+              decoration: const ShapeDecoration(
+                color: Colors.lightBlue,
+                shape: CircleBorder(),
+              ),
+              child: IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () async {
+                  final itemPaca = await showDialogAddCart();
+                  if (itemPaca == null) return;
+                  setState(() {
+                    if (listPaca.isEmpty) {
+                      listPaca.add(itemPaca);
+                    } else {
+                      int indexMatch = null;
+                      for (int i = 0; i < listPaca.length; i++) {
+                        if (listPaca[i].getName() == itemPaca.getName()) {
+                          indexMatch = i;
+                        }
+                      }
+                      if (indexMatch == null) {
+                        listPaca.add(itemPaca);
+                      } else {
+                        listPaca[indexMatch].setAmount(
+                            listPaca[indexMatch].getAmount() +
+                                itemPaca.getAmount());
+                      }
                     }
-                  }
-                  if (indexMatch == null) {
-                    listPaca.add(itemPaca);
-                  } else {
-                    listPaca[indexMatch].setAmount(listPaca[indexMatch].getAmount() + itemPaca.getAmount());
-                    print(listPaca[indexMatch].getAmount());
-                  }
-                }
-              });
-            },
-          ),
+                  });
+                },
+              ),
+            ),
+            SizedBox(width: 15),
+            Visibility(
+                visible: isUploadEnabled,
+                child: Ink(
+                  padding: EdgeInsets.only(top: 10, bottom: 10),
+                  decoration: const ShapeDecoration(
+                    color: Colors.lightBlue,
+                    shape: CircleBorder(),
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.cloud_upload),
+                    onPressed: uploadRegister,
+                  ),
+                ))
+          ],
         ),
         Expanded(
           child: ListView.separated(
@@ -94,20 +116,57 @@ class _PacaRegister extends State<PacaRegister> {
                       right: 10,
                     ),
                     child: PacaCard(
-                      paca: new Paca(
-                        name: listPaca[index].getName(), 
-                        amount: 0, 
-                        price: listPaca[index].getPrice(), 
-                        provider: "",
-                      )
-                    ),
+                        paca: new Paca(
+                      id: listPaca[index].getId(),
+                      name: listPaca[index].getName(),
+                      amount: listPaca[index].getAmount(),
+                      price: listPaca[index].getPrice(),
+                      label: listPaca[index].getLabel(),
+                      provider: listPaca[index].getProvider(),
+                    )),
                   )),
         ),
       ],
     );
   }
 
-  Future<dynamic> showDialogAddCart() async {
+  void uploadRegister() async {
+    int amount;
+    CollectionReference collectionReference =
+        FirebaseFirestore.instance.collection('Inventory');
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+              title: const Text('Añadir al Inventario'),
+              content: const Text(
+                  'Se añadirán las cantidades de las pacas al inventario.\n¿Desea continuar?'),
+              actions: [
+                TextButton(
+                  child: const Text('No'),
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                ),
+                TextButton(
+                  child: const Text('Si'),
+                  onPressed: () async {
+                    for (var item in listPaca) {
+                      DocumentSnapshot<Object> snapshot =
+                          await collectionReference.doc(item.getId()).get();
+                      amount = snapshot.get('amount') + item.getAmount();
+                      collectionReference.doc(item.getId()).update(
+                          {"amount": amount, "updateDate": DateTime.now()});
+                    }
+                    setState(() {
+                      listPaca = [];
+                      Navigator.pop(context, 'OK');
+                    });
+                  },
+                ),
+              ],
+            ));
+  }
+
+  // ignore: missing_return
+  Future<Paca> showDialogAddCart() async {
     _amountPacas = 0;
     _dropdownValue = null;
     _isEnabledFieldPrice = false;
@@ -192,9 +251,7 @@ class _PacaRegister extends State<PacaRegister> {
                                 icon: Icon(Icons.remove),
                                 onPressed: () {
                                   setState(() {
-                                    (_amountPacas > 1)
-                                        ? _amountPacas--
-                                        : print('');
+                                    if (_amountPacas > 1) _amountPacas--;
                                   });
                                 },
                                 color: Colors.black,
@@ -253,13 +310,14 @@ class _PacaRegister extends State<PacaRegister> {
             ),
             actions: <Widget>[
               TextButton(
+                child: const Text('Cancel'),
                 onPressed: () {
                   categoryPacas = [];
                   Navigator.of(context).pop();
                 },
-                child: const Text('Cancel'),
               ),
               TextButton(
+                child: const Text('OK'),
                 onPressed: () {
                   if (_dropdownValue == null) {
                     setState(() {
@@ -272,14 +330,15 @@ class _PacaRegister extends State<PacaRegister> {
                     });
                   } else {
                     itemPaca = Paca(
+                        id: _dropdownValue.getId(),
                         name: _dropdownValue.getName(),
                         price: double.parse(_priceController.text),
                         amount: _amountPacas);
                     categoryPacas = [];
                     Navigator.of(context).pop(itemPaca);
+                    return itemPaca;
                   }
                 },
-                child: const Text('OK'),
               ),
             ],
           ),

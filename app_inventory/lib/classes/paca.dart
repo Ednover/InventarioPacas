@@ -1,20 +1,37 @@
 class Paca {
+  String _id;
   String _name;
+  String _label;
   double _price;
   int _amount;
   String _provider;
 
-  
-  //Paca(this._name, this._price, this._amount, this._provider,);
-  Paca({String name, double price, int amount, String provider,}){
+  Paca({
+    String id,
+    String name,
+    String label,
+    double price,
+    int amount,
+    String provider,
+  }) {
+    this._id = id;
     this._name = name;
+    this._label = label;
     this._price = (price) ?? 0;
     this._amount = (amount) ?? 0;
     this._provider = provider;
   }
 
+  String getId() {
+    return this._id;
+  }
+
   String getName() {
     return this._name;
+  }
+
+  String getLabel() {
+    return this._label;
   }
 
   double getPrice() {
@@ -29,8 +46,16 @@ class Paca {
     return this._provider;
   }
 
+  void setId(String id) {
+    this._id = id;
+  }
+
   void setName(String name) {
     this._name = name;
+  }
+
+  void setLabel(String label) {
+    this._label = label;
   }
 
   void setPrice(double price) {
