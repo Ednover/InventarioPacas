@@ -117,10 +117,12 @@ class _PacaRegister extends State<PacaRegister> {
                     ),
                     child: PacaCard(
                         paca: new Paca(
+                      id: listPaca[index].getId(),
                       name: listPaca[index].getName(),
-                      amount: 0,
+                      amount: listPaca[index].getAmount(),
                       price: listPaca[index].getPrice(),
-                      provider: "",
+                      label: listPaca[index].getLabel(),
+                      provider: listPaca[index].getProvider(),
                     )),
                   )),
         ),
