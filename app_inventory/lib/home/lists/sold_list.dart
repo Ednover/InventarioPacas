@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../classes/paca.dart';
 import '../cards/paca_card.dart';
 
 class SoldList extends StatefulWidget {
@@ -9,18 +10,18 @@ class SoldList extends StatefulWidget {
 
 class _SoldList extends State<SoldList> {
   final List<PacaCard> pacas = <PacaCard>[
-    PacaCard(name: 'Niño mixto', price: 3000),
-    PacaCard(name: 'Hombre', price: 5000),
-    PacaCard(name: 'Mujer', price: 2000),
-    PacaCard(name: 'Deportivo mixto', price: 7000),
-    PacaCard(name: 'Ropa interior mixto', price: 6000),
-    PacaCard(name: 'Shots y cargo', price: 5500),
-    PacaCard(name: 'Hombre mixto', price: 5500),
-    PacaCard(name: 'Mujer mixto', price: 5500),
-    PacaCard(name: 'Deportivo hombre', price: 5500),
-    PacaCard(name: 'Deportivo mujer', price: 5500),
-    PacaCard(name: 'Ropa invierno', price: 5500),
-    PacaCard(name: 'Ropa playa', price: 5500),
+    PacaCard(paca: new Paca(name: 'Niño mixto', price: 3000)),
+    PacaCard(paca: new Paca(name: 'Hombre', amount: 0, price: 5000, provider: "",)),
+    PacaCard(paca: new Paca(name: 'Mujer', amount: 0, price: 2000, provider: "",)),
+    PacaCard(paca: new Paca(name: 'Deportivo mixto', amount: 0, price: 7000, provider: "",)),
+    PacaCard(paca: new Paca(name: 'Ropa interior mixto', amount: 0, price: 6000, provider: "",)),
+    PacaCard(paca: new Paca(name: 'Shorts y cargo', amount: 0, price: 5500, provider: "",)),
+    PacaCard(paca: new Paca(name: 'Hombre mixto', amount: 0, price: 5500, provider: "",)),
+    PacaCard(paca: new Paca(name: 'Mujer mixto', amount: 0, price: 5500, provider: "",)),
+    PacaCard(paca: new Paca(name: 'Deportivo hombre', amount: 0, price: 5500, provider: "",)),
+    PacaCard(paca: new Paca(name: 'Deportivo mujer', amount: 0, price: 5500, provider: "",)),
+    PacaCard(paca: new Paca(name: 'Ropa invierno', amount: 0, price: 5500, provider: "",)),
+    PacaCard(paca: new Paca(name: 'Ropa playa', amount: 0, price: 5500, provider: "",)),
   ];
 
   @override
@@ -29,6 +30,7 @@ class _SoldList extends State<SoldList> {
       appBar: AppBar(
         title: const Text('Pacas vendidas'),
       ),
+      backgroundColor: Color(0xffefefef),
       body: ListView.separated(
       padding:
           EdgeInsets.only(top: 15, bottom: 15),

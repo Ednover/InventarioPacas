@@ -12,7 +12,6 @@ List<Paca> listPaca = [];
 class PacaRegister extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _PacaRegister();
   }
 }
@@ -27,7 +26,6 @@ class _PacaRegister extends State<PacaRegister> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -52,7 +50,6 @@ class _PacaRegister extends State<PacaRegister> {
   @override
   Widget build(BuildContext context) {
     (listPaca.isNotEmpty) ? isUploadEnabled = true : isUploadEnabled = false;
-    // TODO: implement build
     return Column(
       children: [
         Row(
@@ -119,9 +116,12 @@ class _PacaRegister extends State<PacaRegister> {
                       right: 10,
                     ),
                     child: PacaCard(
+                        paca: new Paca(
                       name: listPaca[index].getName(),
+                      amount: 0,
                       price: listPaca[index].getPrice(),
-                    ),
+                      provider: "",
+                    )),
                   )),
         ),
       ],

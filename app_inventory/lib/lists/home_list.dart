@@ -42,14 +42,16 @@ class _ItemList extends State<ItemList> {
     );
 
     final item = Material(
-        child: InkWell(
+      borderRadius: BorderRadius.circular(10),
+      child: InkWell(
       borderRadius: BorderRadius.circular(10),
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => selectRoute(widget.type),
-            ));
+          context, 
+          MaterialPageRoute(
+            builder: (context) => selectRoute(widget.type),
+          )
+        );
       },
       child: Ink(
         padding: EdgeInsets.only(left: 10),
@@ -120,8 +122,8 @@ Icon selectIcon(var type) {
 }
 
 Widget selectRoute(var type) {
-  Widget route;
-  switch (type) {
+    Widget route;
+    switch (type) {
     case "Vendidas":
       route = SoldList();
       break;
@@ -129,11 +131,19 @@ Widget selectRoute(var type) {
       route = AvailableList();
       break;
     case "Movimientos":
+      
       break;
     case "Clientes":
-      route = ClientList();
+      route = Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text("Clientes"),
+        ),
+        backgroundColor: Color(0xffefefef),
+        body: ClientList(),
+      );
       break;
     default:
   }
   return route;
-}
+  }

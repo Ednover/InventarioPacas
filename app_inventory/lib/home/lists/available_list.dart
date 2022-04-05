@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../../classes/paca.dart';
 import '../cards/paca_card.dart';
 
 class AvailableList extends StatefulWidget {
@@ -10,20 +12,10 @@ class AvailableList extends StatefulWidget {
 
 class _AvailableList extends State<AvailableList> {
 
-    final List<PacaCard> pacas = <PacaCard>[
-    PacaCard(name: 'Niño mixto', price: 3000),
-    PacaCard(name: 'Hombre', price: 5000),
-    PacaCard(name: 'Mujer', price: 2000),
-    PacaCard(name: 'Deportivo mixto', price: 7000),
-    PacaCard(name: 'Ropa interior mixto', price: 6000),
-    PacaCard(name: 'Shots y cargo', price: 5500),
-    PacaCard(name: 'Hombre mixto', price: 5500),
-    PacaCard(name: 'Mujer mixto', price: 5500),
-    PacaCard(name: 'Deportivo hombre', price: 5500),
-    PacaCard(name: 'Deportivo mujer', price: 5500),
-    PacaCard(name: 'Ropa invierno', price: 5500),
-    PacaCard(name: 'Ropa playa', price: 5500),
-  ];
+  @override
+  void initState() {
+    super.initState();    
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,21 +23,33 @@ class _AvailableList extends State<AvailableList> {
       appBar: AppBar(
         title: const Text('Pacas vendidas'),
       ),
-      body: ListView.separated(
-      padding:
-          EdgeInsets.only(top: 15, bottom: 15),
-      itemBuilder: (BuildContext context, int index) {
-        return Container(
-          margin: EdgeInsets.only(left: 10, right: 10),
-          child: pacas[index],
-        );
-      },
-      separatorBuilder: (BuildContext context, int index) => Container(
-        width: double.infinity,
-        height: 10,
-      ),
-      itemCount: pacas.length,
-    ),
+      backgroundColor: Color(0xffefefef),
+      body: StreamBuilder(
+          stream: FirebaseFirestore.instance.collection('Inventory').where('amount', isGreaterThan: 0).snapshots(),
+          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) return Container(height: MediaQuery.of(context).size.height, width: MediaQuery.of(context).size.width, alignment: Alignment.center, child: CircularProgressIndicator());
+              return ListView.separated(
+                padding:
+                    EdgeInsets.only(top: 15, bottom: 15),
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    margin: EdgeInsets.only(left: 10, right: 10),
+                    child: PacaCard(paca: new Paca(
+                      name: snapshot.data.docs[index].get('name'),
+                      amount: snapshot.data.docs[index].get('amount').toInt(), 
+                      price: snapshot.data.docs[index].get('price').toDouble(), 
+                      provider: snapshot.data.docs[index].get('provider'),),
+                    ),
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) => Container(
+                  width: double.infinity,
+                  height: 10,
+                ),
+                itemCount: snapshot.data.docs.length,
+              );
+            }
+          ),
     );
   }
 }

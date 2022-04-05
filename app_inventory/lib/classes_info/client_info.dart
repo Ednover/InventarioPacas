@@ -92,7 +92,8 @@ class _ClientInfo extends State<ClientInfo> {
             }
           },
         ),
-        title: const Text("Cliente", textAlign: TextAlign.center),
+        centerTitle: true,
+        title: const Text("Cliente"),
         actions: <Widget>[
           Visibility(
             child: iconEdit,
@@ -137,6 +138,7 @@ class _ClientInfo extends State<ClientInfo> {
                 ),
               ),
               readOnly: isOnlyRead,
+              keyboardType: TextInputType.number,
             ),
           ],
         ),
