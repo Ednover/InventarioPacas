@@ -1,12 +1,13 @@
+import 'package:app_inventory/forms/add_client.dart';
 import 'package:app_inventory/home/lists/available_list.dart';
 import 'package:app_inventory/home/lists/sold_list.dart';
 import 'package:flutter/material.dart';
 
-import 'client_list.dart';
+import 'client_info_list.dart';
 
 class ItemList extends StatefulWidget {
   final String type;
-  final double amount;
+  final int amount;
 
   ItemList({@required this.type, this.amount}) : super();
 
@@ -17,8 +18,10 @@ class ItemList extends StatefulWidget {
 }
 
 class _ItemList extends State<ItemList> {
+
   @override
   Widget build(BuildContext context) {
+
     final iconItem = Container(
       child: selectIcon(widget.type),
     );
@@ -42,44 +45,43 @@ class _ItemList extends State<ItemList> {
     );
 
     final item = Material(
-      borderRadius: BorderRadius.circular(10),
-      child: InkWell(
-      borderRadius: BorderRadius.circular(10),
-      onTap: () {
-        Navigator.push(
-          context, 
-          MaterialPageRoute(
-            builder: (context) => selectRoute(widget.type),
-          )
-        );
-      },
-      child: Ink(
-        padding: EdgeInsets.only(left: 10),
-        width: MediaQuery.of(context).size.width,
-        height: 80,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(
-            color: Colors.black.withAlpha(30),
-            width: 1,
-            style: BorderStyle.solid,
-          ),
+        borderRadius: BorderRadius.circular(10),
+        child: InkWell(
           borderRadius: BorderRadius.circular(10),
-        ),
-        child: Row(
-          children: <Widget>[
-            iconItem,
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(flex: 6, child: titleItem),
-                Expanded(flex: 4, child: amountItem)
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => selectRoute(widget.type, context),
+                ));
+          },
+          child: Ink(
+            padding: EdgeInsets.only(left: 10),
+            width: MediaQuery.of(context).size.width,
+            height: 80,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(
+                color: Colors.black.withAlpha(30),
+                width: 1,
+                style: BorderStyle.solid,
+              ),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Row(
+              children: <Widget>[
+                iconItem,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(flex: 6, child: titleItem),
+                    Expanded(flex: 4, child: amountItem)
+                  ],
+                )
               ],
-            )
-          ],
-        ),
-      ),
-    ));
+            ),
+          ),
+        ));
 
     return item;
   }
@@ -121,9 +123,9 @@ Icon selectIcon(var type) {
   return icon;
 }
 
-Widget selectRoute(var type) {
-    Widget route;
-    switch (type) {
+Widget selectRoute(var type, BuildContext context) {
+  Widget route;
+  switch (type) {
     case "Vendidas":
       route = SoldList();
       break;
@@ -131,19 +133,31 @@ Widget selectRoute(var type) {
       route = AvailableList();
       break;
     case "Movimientos":
-      
       break;
     case "Clientes":
       route = Scaffold(
         appBar: AppBar(
           centerTitle: true,
           title: const Text("Clientes"),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.add),
+              color: Colors.white,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddClient()),
+                );
+              },
+            )
+          ],
         ),
         backgroundColor: Color(0xffefefef),
-        body: ClientList(),
+        body: ClientInfoList(),
       );
       break;
     default:
   }
   return route;
-  }
+}
