@@ -1,10 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class ClientInfo extends StatefulWidget {
-  final String name;
-  final double amount;
+import '../classes/client.dart';
 
-  ClientInfo({@required this.name, this.amount}) : super();
+final colorOff = Colors.grey;
+final colorOn = Colors.blue;
+
+class ClientInfo extends StatefulWidget {
+  final Client client;
+
+  ClientInfo({@required this.client}) : super();
 
   @override
   State<StatefulWidget> createState() {
@@ -13,17 +18,19 @@ class ClientInfo extends StatefulWidget {
 }
 
 class _ClientInfo extends State<ClientInfo> {
-  var isOnlyRead = true;
 
+  var colorField = Colors.grey;
+  var colorLabel = Colors.black54;
+
+  var isOnlyRead = true;
   var isModeEdit = false;
 
   var barIcon;
 
-  final colorOff = Colors.grey;
-  final colorOn = Colors.blue;
-
-  var colorField = Colors.grey;
-  var colorLabel = Colors.black54;
+  var nameController;
+  var lastNameController;
+  var localeController;
+  var phoneController;
 
   void changeMode(bool isModeEdit) {
     setState(() {
@@ -40,8 +47,34 @@ class _ClientInfo extends State<ClientInfo> {
     });
   }
 
+  CollectionReference clients = FirebaseFirestore.instance.collection('Clients');
+
+  Future<void> updateClient() {
+    print(widget.client.getId());
+    print(localeController.text);
+    return clients
+      .doc(widget.client.getId())
+      .set({
+        'name': nameController.text,
+        'last_name': lastNameController.text,
+        'locale': localeController.text,
+        'phone': phoneController.text,
+      })
+      .then((value) => print("User Added"))
+      .catchError((error) => print("Failed to add user: $error"));
+  }
+
+  void initState() {
+    super.initState();
+    nameController = TextEditingController(text: widget.client.getName());
+    lastNameController = TextEditingController(text: widget.client.getLastName());
+    localeController = TextEditingController(text: widget.client.getLocale());
+    phoneController = TextEditingController(text: widget.client.getPhone().toString());
+  }
+
   @override
   Widget build(BuildContext context) {
+    
     var iconEdit = IconButton(
       icon: const Icon(Icons.edit),
       color: Colors.white,
@@ -54,6 +87,7 @@ class _ClientInfo extends State<ClientInfo> {
       icon: const Icon(Icons.check),
       color: Colors.white,
       onPressed: () {
+        updateClient();
         changeMode(isModeEdit);
       },
     );
@@ -110,7 +144,7 @@ class _ClientInfo extends State<ClientInfo> {
         child: Column(
           children: <Widget>[
             TextFormField(
-              initialValue: widget.name,
+              controller: nameController,
               style: TextStyle(height: 2),
               decoration: InputDecoration(
                 labelText: "Nombre",
@@ -122,13 +156,18 @@ class _ClientInfo extends State<ClientInfo> {
                   borderSide: BorderSide(color: colorField),
                 ),
               ),
+              validator: (value){
+                widget.client.setName(value);
+                return null;
+              },
               readOnly: isOnlyRead,
             ),
             TextFormField(
-              initialValue: widget.amount.toString(),
+              //initialValue: widget.client.getLastName(),
+              controller: lastNameController,
               style: TextStyle(height: 2),
               decoration: InputDecoration(
-                labelText: "Cantidad",
+                labelText: "Apellido",
                 labelStyle: TextStyle(fontSize: 20, color: colorLabel),
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: colorOff),
@@ -137,6 +176,53 @@ class _ClientInfo extends State<ClientInfo> {
                   borderSide: BorderSide(color: colorField),
                 ),
               ),
+              validator: (value){
+                widget.client.setLastName(value);
+                return null;
+              },
+              readOnly: isOnlyRead,
+            ),
+            TextFormField(
+              //initialValue: widget.client.getLocale(),
+              controller: localeController,
+              style: TextStyle(height: 2),
+              decoration: InputDecoration(
+                labelText: "Ciudad",
+                labelStyle: TextStyle(fontSize: 20, color: colorLabel),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: colorOff),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: colorField),
+                ),
+              ),
+              validator: (value){
+                if (value == null || value.isEmpty) {
+                return 'Please enter some text';
+                }
+                widget.client.setLocale(value);
+                return null;
+              },
+              readOnly: isOnlyRead,
+            ),
+            TextFormField(
+              //initialValue: widget.client.getPhone().toString(),
+              controller: phoneController,
+              style: TextStyle(height: 2),
+              decoration: InputDecoration(
+                labelText: "Teléfono",
+                labelStyle: TextStyle(fontSize: 20, color: colorLabel),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: colorOff),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: colorField),
+                ),
+              ),
+              validator: (value){
+                widget.client.setPhone(int.parse(value));
+                return null;
+              },
               readOnly: isOnlyRead,
               keyboardType: TextInputType.number,
             ),

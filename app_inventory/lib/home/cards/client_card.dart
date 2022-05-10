@@ -1,11 +1,12 @@
-import 'package:app_inventory/classes_info/client_info.dart';
 import 'package:flutter/material.dart';
 
-class ClientCard extends StatefulWidget {
-  final String name;
-  final double amount;
+import '../../classes/client.dart';
 
-  ClientCard({@required this.name, this.amount}) : super();
+class ClientCard extends StatefulWidget {
+  final Client client;
+  final Widget onTapWidget;
+
+  ClientCard({@required this.client, this.onTapWidget}) : super();
 
   @override
   State<StatefulWidget> createState() => _Client();
@@ -17,16 +18,16 @@ class _Client extends State<ClientCard> {
     final nameClient = Container(
       padding: const EdgeInsets.only(left: 10),
       child: Text(
-        widget.name,
+        widget.client.getName(),
         style: TextStyle(fontSize: 22),
       ),
       alignment: Alignment.centerLeft,
     );
 
-    final amountClient = Container(
+    final localeClient = Container(
       padding: const EdgeInsets.only(left: 10),
       child: Text(
-        widget.amount.toString(),
+        widget.client.getLocale(),
         style: TextStyle(fontSize: 18),
       ),
       alignment: Alignment.topLeft,
@@ -41,10 +42,11 @@ class _Client extends State<ClientCard> {
             context,
             MaterialPageRoute(
               builder: (context) =>
-                ClientInfo(name: widget.name, amount: widget.amount),
+                widget.onTapWidget,
             )
           );
         },
+        onLongPress: (){},
         child: Ink(
           padding: EdgeInsets.only(left: 10),
           width: MediaQuery.of(context).size.width,
@@ -64,7 +66,7 @@ class _Client extends State<ClientCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(flex: 6, child: nameClient),
-                  Expanded(flex: 4, child: amountClient)
+                  Expanded(flex: 4, child: localeClient)
                 ],
               )
             ],

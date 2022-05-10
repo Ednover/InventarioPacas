@@ -21,14 +21,14 @@ class TopResume extends StatelessWidget {
         Text(
           "\$$ganacias",
           style: TextStyle(
-            color: Color.fromARGB(255, 95, 214, 101),
+            color: Color.fromARGB(255, 80, 242, 22),
             fontSize: 40,
           )
         ),
         Text(
           "\$$gastos",
           style: TextStyle(
-            color: Color.fromARGB(255, 212, 111, 103),
+            color: Color.fromARGB(255, 250, 93, 84),
             fontSize: 40,
           ),
         ),
