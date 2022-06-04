@@ -4,6 +4,7 @@ import 'package:app_inventory/home/lists/sold_list.dart';
 import 'package:flutter/material.dart';
 
 import 'client_info_list.dart';
+import 'provider_list.dart';
 
 class ItemList extends StatefulWidget {
   final String type;
@@ -18,10 +19,8 @@ class ItemList extends StatefulWidget {
 }
 
 class _ItemList extends State<ItemList> {
-
   @override
   Widget build(BuildContext context) {
-
     final iconItem = Container(
       child: selectIcon(widget.type),
     );
@@ -118,6 +117,13 @@ Icon selectIcon(var type) {
         size: 50,
       );
       break;
+    case "Proveedores":
+      icon = Icon(
+        Icons.airport_shuttle_rounded,
+        color: Colors.black,
+        size: 50,
+      );
+      break;
     default:
   }
   return icon;
@@ -137,8 +143,8 @@ Widget selectRoute(var type, BuildContext context) {
     case "Clientes":
       route = Scaffold(
         appBar: AppBar(
-          centerTitle: true,
           title: const Text("Clientes"),
+          centerTitle: true,
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.add),
@@ -146,16 +152,18 @@ Widget selectRoute(var type, BuildContext context) {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => AddClient()),
+                  MaterialPageRoute(builder: (context) => AddClient()),
                 );
               },
-            )
+            ),
           ],
         ),
         backgroundColor: Color(0xffefefef),
         body: ClientInfoList(),
       );
+      break;
+    case "Proveedores":
+      route = ProviderList();
       break;
     default:
   }
