@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../classes/client.dart';
+import '../../forms/client_payment.dart';
 
 class ClientCard extends StatefulWidget {
   final Client client;
@@ -39,16 +40,14 @@ class _Client extends State<ClientCard> {
         borderRadius: BorderRadius.circular(10),
         onTap: () {
           Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                widget.onTapWidget,
-            )
-          );
+              context,
+              MaterialPageRoute(
+                builder: (context) => widget.onTapWidget,
+              ));
         },
-        onLongPress: (){},
+        onLongPress: () {},
         child: Ink(
-          padding: EdgeInsets.only(left: 10),
+          padding: EdgeInsets.only(left: 10, right: 5),
           width: MediaQuery.of(context).size.width,
           height: 80,
           decoration: BoxDecoration(
@@ -61,6 +60,7 @@ class _Client extends State<ClientCard> {
             borderRadius: BorderRadius.circular(10),
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,6 +68,19 @@ class _Client extends State<ClientCard> {
                   Expanded(flex: 6, child: nameClient),
                   Expanded(flex: 4, child: localeClient)
                 ],
+              ),
+              IconButton(
+                iconSize: 50,
+                icon: const Icon(Icons.attach_money),
+                color: Colors.green,
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ClientPayment(client: widget.client),
+                      ));
+                },
               )
             ],
           ),
