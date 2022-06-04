@@ -4,6 +4,7 @@ class Client {
   String _lastName;
   String _locale;
   int _phone;
+  double _balance;
 
   Client({
     String id,
@@ -11,12 +12,14 @@ class Client {
     String lastName,
     String locale,
     int phone,
+    double balance,
   }) {
     this._id = id;
     this._name = name;
     this._lastName = lastName;
     this._locale = locale;
     this._phone = (phone) ?? 0;
+    this._balance = (balance) ?? 0;
   }
 
   String getId() {
@@ -39,6 +42,10 @@ class Client {
     return this._phone;
   }
 
+  double getBalance() {
+    return this._balance;
+  }
+
   void setId(String id) {
     this._id = id;
   }
@@ -47,7 +54,7 @@ class Client {
     this._name = name;
   }
 
-  void setLastName (String lastName) {
+  void setLastName(String lastName) {
     this._lastName = lastName;
   }
 
@@ -57,5 +64,9 @@ class Client {
 
   void setPhone(int phone) {
     this._phone = phone;
+  }
+
+  void setBalance(double balance) {
+    this._balance = balance;
   }
 }
