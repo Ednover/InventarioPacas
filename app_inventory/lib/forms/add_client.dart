@@ -7,7 +7,6 @@ class AddClient extends StatefulWidget {
 }
 
 class _AddClientState extends State<AddClient> {
-
   final nameController = TextEditingController();
   final lastNameController = TextEditingController();
   final localeController = TextEditingController();
@@ -19,28 +18,28 @@ class _AddClientState extends State<AddClient> {
   Future<bool> addClient() async {
     // Call the user's CollectionReference to add a new user
     bool isAdd;
-    await clients
-        .add({
-          'name': nameController.text,
-          'last_name': lastNameController.text,
-          'locale': localeController.text,
-          'phone': phoneController.text,
-        })
-        .then((value){
-          print("Add client");
-          isAdd =  true;
-        })
-        .catchError((error){
-          print("Failed to add user: $error");
-          isAdd =  false;
-        });
+    await clients.add({
+      'name': nameController.text,
+      'last_name': lastNameController.text,
+      'locale': localeController.text,
+      'phone': int.parse(phoneController.text),
+      'balance': 0,
+      'debts': [],
+      'payments': [],
+    }).then((value) {
+      print("Add client");
+      isAdd = true;
+    }).catchError((error) {
+      print("Failed to add user: $error");
+      isAdd = false;
+    });
     return isAdd;
   }
 
-  void validAddClient() async{
+  void validAddClient() async {
     var snackBarResponse;
     bool validQuery = await addClient();
-    if (validQuery){
+    if (validQuery) {
       snackBarResponse = SnackBar(
         content: const Text('Cliente agregado'),
       );
@@ -54,7 +53,6 @@ class _AddClientState extends State<AddClient> {
 
   @override
   Widget build(BuildContext context) {
-
     void alertExitPage() {
       showDialog(
         context: context,
@@ -88,7 +86,7 @@ class _AddClientState extends State<AddClient> {
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter some text';
-        } else{
+        } else {
           nameController.text = value;
         }
         return null;
@@ -162,7 +160,8 @@ class _AddClientState extends State<AddClient> {
             alertExitPage();
           },
         ),
-        title: const Text("Cliente", textAlign: TextAlign.center),
+        title: const Text("Agregar cliente"),
+        centerTitle: true,
         actions: <Widget>[
           TextButton(
             onPressed: () {
