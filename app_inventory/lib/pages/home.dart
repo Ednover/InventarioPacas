@@ -19,6 +19,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
   Animation _paddingAnimation;
   int totalAvaible = 0;
   int totalClients = 0;
+  int totalProviders = 0;
 
   bool isLoading = false;
 
@@ -40,7 +41,17 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
         .get()
         .then((QuerySnapshot querySnapshot) {
       totalClients = querySnapshot.docs.length;
-    }).catchError((error) => print("Failed to add user: $error"));
+    }).catchError((error) => print("Failed to query clients: $error"));
+    return null;
+  }
+
+  Future<void> queryAmountProviders() async {
+    await FirebaseFirestore.instance
+        .collection('Providers')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      totalProviders = querySnapshot.docs.length;
+    }).catchError((error) => print("Failed to query providers: $error"));
     return null;
   }
 
@@ -76,6 +87,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
     });
     await queryAmountPacas();
     await queryAmountClients();
+    await queryAmountProviders();
     setState(() {
       items.add(
         ItemList(type: 'Vendidas', amount: 0),
@@ -85,6 +97,12 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
       );
       items.add(
         ItemList(type: 'Clientes', amount: totalClients),
+      );
+      items.add(
+        ItemList(
+          type: 'Proveedores',
+          amount: totalProviders,
+        ),
       );
       items.add(
         ItemList(type: 'Movimientos', amount: 0),
