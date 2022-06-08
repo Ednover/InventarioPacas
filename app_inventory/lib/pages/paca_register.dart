@@ -131,38 +131,80 @@ class _PacaRegister extends State<PacaRegister> {
   }
 
   void uploadRegister() async {
-    int amount;
-    CollectionReference collectionReference =
-        FirebaseFirestore.instance.collection('Inventory');
     return showDialog(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-              title: const Text('Añadir al Inventario'),
-              content: const Text(
-                  'Se añadirán las cantidades de las pacas al inventario.\n¿Desea continuar?'),
-              actions: [
-                TextButton(
-                  child: const Text('No'),
-                  onPressed: () => Navigator.pop(context, 'Cancel'),
-                ),
-                TextButton(
-                  child: const Text('Si'),
-                  onPressed: () async {
-                    for (var item in listPaca) {
-                      DocumentSnapshot<Object> snapshot =
-                          await collectionReference.doc(item.getId()).get();
-                      amount = snapshot.get('amount') + item.getAmount();
-                      collectionReference.doc(item.getId()).update(
-                          {"amount": amount, "updateDate": DateTime.now()});
-                    }
-                    setState(() {
-                      listPaca = [];
-                      Navigator.pop(context, 'OK');
-                    });
-                  },
-                ),
-              ],
-            ));
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Añadir al Inventario'),
+        content: const Text(
+            'Se añadirán las cantidades de las pacas al inventario.\n¿Desea continuar?'),
+        actions: [
+          TextButton(
+            child: const Text('No'),
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+          ),
+          TextButton(
+            child: const Text('Si'),
+            onPressed: () async {
+              for (var item in listPaca) {
+                await updateInventory(item);
+                //await addInputs(item);
+                //await updateDebtsProvider(item);
+              }
+              setState(() {
+                listPaca = [];
+                Navigator.pop(context, 'OK');
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> updateInventory(Paca item) async {
+    CollectionReference inventory =
+        FirebaseFirestore.instance.collection('Inventory');
+    return inventory.doc(item.getId()).update(
+      {
+        "amount": FieldValue.increment(item.getAmount()),
+        "updateDate": DateTime.now(),
+      },
+    );
+  }
+
+  Future<void> addInputs(Paca item) async {
+    CollectionReference inputs =
+        FirebaseFirestore.instance.collection('Inputs');
+    return inputs.add(
+      {
+        'id_paca': item.getId(),
+        'amount': item.getAmount(),
+        'subtotal': item.getPrice(),
+        'total': item.getPrice() * item.getAmount(),
+        //'id_provider': widget.provider.getId(),
+        'date': DateTime.now(),
+      },
+    );
+  }
+
+  Future<void> updateDebtsProvider(Paca item) async {
+    List<Map<String, Object>> debts = [];
+    debts.add(
+      {
+        'total': item.getPrice() * item.getAmount(),
+        'date': DateTime.now(),
+      },
+    );
+    CollectionReference providers =
+        FirebaseFirestore.instance.collection('Providers');
+    /* return clients.doc(widget.provider.getId()).update(
+      {
+        'balance': FieldValue.increment(
+          item.getPrice() * item.getAmount(),
+        ),
+        'debts': FieldValue.arrayUnion(debts),
+      },
+    ); */
   }
 
   // ignore: missing_return
@@ -199,7 +241,7 @@ class _PacaRegister extends State<PacaRegister> {
                         setState(() {
                           _dropdownValue = newValue;
                           _priceController.text =
-                              _dropdownValue.getPrice().toString();
+                              _dropdownValue.getPrice().toStringAsFixed(0);
                           _isEnabledFieldPrice = true;
                           _boxDecorationAlert = null;
                           _amountPacas = 1;
