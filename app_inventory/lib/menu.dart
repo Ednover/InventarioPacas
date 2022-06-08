@@ -1,4 +1,6 @@
+import 'package:app_inventory/login.dart';
 import 'package:app_inventory/pages/paca_sale.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'pages/paca_register.dart';
@@ -40,6 +42,15 @@ class _Menu extends State<Menu> {
       appBar: AppBar(
         title: Text(titleBar),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+              return Login;
+            },
+            icon: Icon(Icons.logout),
+          ),
+        ],
       ),
       body: widgetsChildren[indexTap],
       backgroundColor: Color(0xffefefef),
