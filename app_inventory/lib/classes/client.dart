@@ -1,19 +1,22 @@
-class Provider {
+class Client {
   String _id;
   String _name;
+  String _lastName;
   String _locale;
   int _phone;
   double _balance;
 
-  Provider({
+  Client({
     String id,
     String name,
+    String lastName,
     String locale,
     int phone,
     double balance,
   }) {
     this._id = id;
     this._name = name;
+    this._lastName = lastName;
     this._locale = locale;
     this._phone = (phone) ?? 0;
     this._balance = (balance) ?? 0;
@@ -25,6 +28,10 @@ class Provider {
 
   String getName() {
     return this._name;
+  }
+
+  String getLastName() {
+    return this._lastName;
   }
 
   String getLocale() {
@@ -45,6 +52,10 @@ class Provider {
 
   void setName(String name) {
     this._name = name;
+  }
+
+  void setLastName(String lastName) {
+    this._lastName = lastName;
   }
 
   void setLocale(String locale) {
