@@ -1,23 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../classes/client.dart';
+import '../classes/provider.dart';
 
 final colorOff = Colors.grey;
 final colorOn = Colors.blue;
 
-class ClientInfo extends StatefulWidget {
-  final Client client;
+class ProviderInfo extends StatefulWidget {
+  final Provider provider;
 
-  ClientInfo({@required this.client}) : super();
+  ProviderInfo({@required this.provider}) : super();
 
   @override
-  State<StatefulWidget> createState() {
-    return _ClientInfo();
-  }
+  _ProviderInfo createState() => _ProviderInfo();
 }
 
-class _ClientInfo extends State<ClientInfo> {
+class _ProviderInfo extends State<ProviderInfo> {
   var colorField = Colors.grey;
   var colorLabel = Colors.black54;
 
@@ -25,7 +23,6 @@ class _ClientInfo extends State<ClientInfo> {
   var isModeEdit = false;
 
   var nameController;
-  var lastNameController;
   var localeController;
   var phoneController;
 
@@ -44,17 +41,16 @@ class _ClientInfo extends State<ClientInfo> {
     });
   }
 
-  CollectionReference clients =
-      FirebaseFirestore.instance.collection('Clients');
+  CollectionReference providers =
+      FirebaseFirestore.instance.collection('Providers');
 
-  Future<void> updateClient() {
-    print(widget.client.getId());
+  Future<void> updateProvider() {
+    print(widget.provider.getId());
     print(localeController.text);
-    return clients
-        .doc(widget.client.getId())
+    return providers
+        .doc(widget.provider.getId())
         .update({
           'name': nameController.text,
-          'last_name': lastNameController.text,
           'locale': localeController.text,
           'phone': int.parse(phoneController.text),
         })
@@ -64,26 +60,24 @@ class _ClientInfo extends State<ClientInfo> {
 
   void initState() {
     super.initState();
-    nameController = TextEditingController(text: widget.client.getName());
-    lastNameController =
-        TextEditingController(text: widget.client.getLastName());
-    localeController = TextEditingController(text: widget.client.getLocale());
+    nameController = TextEditingController(text: widget.provider.getName());
+    localeController = TextEditingController(text: widget.provider.getLocale());
     phoneController =
-        TextEditingController(text: widget.client.getPhone().toString());
+        TextEditingController(text: widget.provider.getPhone().toString());
   }
 
   @override
   Widget build(BuildContext context) {
-    var buttonCheck = FloatingActionButton(
+    var iconCheck = FloatingActionButton(
       child: const Icon(Icons.check),
       backgroundColor: Colors.blue,
       onPressed: () {
-        updateClient();
+        updateProvider();
         changeMode(isModeEdit);
       },
     );
 
-    var buttonEdit = FloatingActionButton(
+    var iconEdit = FloatingActionButton(
       child: const Icon(Icons.edit),
       backgroundColor: Colors.blue,
       onPressed: () {
@@ -136,27 +130,7 @@ class _ClientInfo extends State<ClientInfo> {
         ),
       ),
       validator: (value) {
-        widget.client.setName(value);
-        return null;
-      },
-      readOnly: isOnlyRead,
-    );
-
-    var labelLastName = TextFormField(
-      controller: lastNameController,
-      style: TextStyle(height: 2),
-      decoration: InputDecoration(
-        labelText: "Apellido",
-        labelStyle: TextStyle(fontSize: 20, color: colorLabel),
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: colorOff),
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: colorField),
-        ),
-      ),
-      validator: (value) {
-        widget.client.setLastName(value);
+        widget.provider.setName(value);
         return null;
       },
       readOnly: isOnlyRead,
@@ -179,7 +153,7 @@ class _ClientInfo extends State<ClientInfo> {
         if (value == null || value.isEmpty) {
           return 'Please enter some text';
         }
-        widget.client.setLocale(value);
+        widget.provider.setLocale(value);
         return null;
       },
       readOnly: isOnlyRead,
@@ -199,7 +173,7 @@ class _ClientInfo extends State<ClientInfo> {
         ),
       ),
       validator: (value) {
-        widget.client.setPhone(int.parse(value));
+        widget.provider.setPhone(int.parse(value));
         return null;
       },
       readOnly: isOnlyRead,
@@ -217,13 +191,12 @@ class _ClientInfo extends State<ClientInfo> {
         child: Column(
           children: <Widget>[
             labelName,
-            labelLastName,
             labelLocale,
             labelPhone,
           ],
         ),
       ),
-      floatingActionButton: (isModeEdit) ? buttonCheck : buttonEdit,
+      floatingActionButton: (isModeEdit) ? iconCheck : iconEdit,
     );
   }
 }

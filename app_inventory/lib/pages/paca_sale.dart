@@ -1,5 +1,5 @@
-import 'package:app_inventory/lists/client_list.dart';
 import 'package:flutter/material.dart';
+import '../lists/client_cart_list.dart';
 
 class PacaSale extends StatefulWidget {
   @override
@@ -13,7 +13,7 @@ class _PacaSale extends State<PacaSale> {
       children: [
         Container(
           margin: EdgeInsets.only(top: 55),
-          child: ClientList(),
+          child: ClientCartList(),
         ),
         Container(
           child: Text(

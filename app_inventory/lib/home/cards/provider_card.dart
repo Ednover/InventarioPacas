@@ -1,40 +1,40 @@
 import 'package:flutter/material.dart';
 
-import '../../classes/client.dart';
-import '../../forms/client_payment.dart';
+import '../../classes/provider.dart';
+import '../../classes_info/provider_info.dart';
+import '../../forms/provider_payment.dart';
 
-class ClientCard extends StatefulWidget {
-  final Client client;
-  final Widget onTapWidget;
+class ProviderCard extends StatefulWidget {
+  final Provider provider;
 
-  ClientCard({@required this.client, this.onTapWidget}) : super();
+  ProviderCard({@required this.provider}) : super();
 
   @override
-  State<StatefulWidget> createState() => _Client();
+  _ProviderCard createState() => _ProviderCard();
 }
 
-class _Client extends State<ClientCard> {
+class _ProviderCard extends State<ProviderCard> {
   @override
   Widget build(BuildContext context) {
-    final nameClient = Container(
+    final nameProvider = Container(
       padding: const EdgeInsets.only(left: 10),
       child: Text(
-        widget.client.getName(),
+        widget.provider.getName(),
         style: TextStyle(fontSize: 22),
       ),
       alignment: Alignment.centerLeft,
     );
 
-    final localeClient = Container(
+    final localeProvider = Container(
       padding: const EdgeInsets.only(left: 10),
       child: Text(
-        widget.client.getLocale(),
+        widget.provider.getLocale(),
         style: TextStyle(fontSize: 18),
       ),
       alignment: Alignment.topLeft,
     );
 
-    final client = Material(
+    final provider = Material(
       borderRadius: BorderRadius.circular(10),
       child: InkWell(
         borderRadius: BorderRadius.circular(10),
@@ -42,7 +42,7 @@ class _Client extends State<ClientCard> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => widget.onTapWidget,
+                builder: (context) => ProviderInfo(provider: widget.provider),
               ));
         },
         onLongPress: () {},
@@ -65,8 +65,8 @@ class _Client extends State<ClientCard> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(flex: 6, child: nameClient),
-                  Expanded(flex: 4, child: localeClient)
+                  Expanded(flex: 6, child: nameProvider),
+                  Expanded(flex: 4, child: localeProvider),
                 ],
               ),
               IconButton(
@@ -78,7 +78,7 @@ class _Client extends State<ClientCard> {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            ClientPayment(client: widget.client),
+                            ProviderPayment(provider: widget.provider),
                       ));
                 },
               )
@@ -87,6 +87,6 @@ class _Client extends State<ClientCard> {
         ),
       ),
     );
-    return client;
+    return provider;
   }
 }
