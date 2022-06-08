@@ -60,7 +60,8 @@ class _PacaCartState extends State<PacaCart> {
   Future<bool> getCategoryPacas() async {
     CollectionReference collectionReference =
         FirebaseFirestore.instance.collection('Inventory');
-    QuerySnapshot querySnapshot = await collectionReference.where('amount', isGreaterThan: 0).get();
+    QuerySnapshot querySnapshot =
+        await collectionReference.where('amount', isGreaterThan: 0).get();
     if (querySnapshot.docs.length > 0) {
       for (var doc in querySnapshot.docs) {
         categoryPacas.add(Paca(
@@ -88,7 +89,8 @@ class _PacaCartState extends State<PacaCart> {
             alertExitPage();
           },
         ),
-        title: const Text("Venta de pacas", textAlign: TextAlign.center),
+        title: const Text("Venta de pacas"),
+        centerTitle: true,
       ),
       body: Column(
         children: [
@@ -120,8 +122,9 @@ class _PacaCartState extends State<PacaCart> {
                           listPaca.add(itemPaca);
                         } else {
                           listPaca[indexMatch].setAmount(
-                              listPaca[indexMatch].getAmount() +
-                                  itemPaca.getAmount());
+                            listPaca[indexMatch].getAmount() +
+                                itemPaca.getAmount(),
+                          );
                         }
                       }
                     });
@@ -146,25 +149,27 @@ class _PacaCartState extends State<PacaCart> {
           ),
           Expanded(
             child: ListView.separated(
-                separatorBuilder: (context, index) => Container(
-                      height: 10,
-                    ),
-                itemCount: listPaca.length,
-                itemBuilder: (context, index) => Container(
-                      padding: EdgeInsets.only(
-                        left: 10,
-                        right: 10,
-                      ),
-                      child: PacaCard(
-                          paca: new Paca(
-                        id: listPaca[index].getId(),
-                        name: listPaca[index].getName(),
-                        amount: listPaca[index].getAmount(),
-                        price: listPaca[index].getPrice(),
-                        label: listPaca[index].getLabel(),
-                        provider: listPaca[index].getProvider(),
-                      )),
-                    )),
+              separatorBuilder: (context, index) => Container(
+                height: 10,
+              ),
+              itemCount: listPaca.length,
+              itemBuilder: (context, index) => Container(
+                padding: EdgeInsets.only(
+                  left: 10,
+                  right: 10,
+                ),
+                child: PacaCard(
+                  paca: new Paca(
+                    id: listPaca[index].getId(),
+                    name: listPaca[index].getName(),
+                    amount: listPaca[index].getAmount(),
+                    price: listPaca[index].getPrice(),
+                    label: listPaca[index].getLabel(),
+                    provider: listPaca[index].getProvider(),
+                  ),
+                ),
+              ),
+            ),
           ),
         ],
       ),
@@ -172,39 +177,81 @@ class _PacaCartState extends State<PacaCart> {
   }
 
   void uploadRegister() async {
-    int amount;
-    CollectionReference collectionReference =
-        FirebaseFirestore.instance.collection('Inventory');
     return showDialog(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-              title: const Text('Añadir al Inventario'),
-              content: const Text(
-                  'Se añadirán las cantidades de las pacas al inventario.\n¿Desea continuar?'),
-              actions: [
-                TextButton(
-                  child: const Text('No'),
-                  onPressed: () => Navigator.pop(context, 'Cancel'),
-                ),
-                TextButton(
-                  child: const Text('Si'),
-                  onPressed: () async {
-                    for (var item in listPaca) {
-                      DocumentSnapshot<Object> snapshot =
-                          await collectionReference.doc(item.getId()).get();
-                      amount = snapshot.get('amount') - item.getAmount();
-                      collectionReference.doc(item.getId()).update(
-                          {"amount": amount, "updateDate": DateTime.now()});
-                    }
-                    setState(() {
-                      listPaca = [];
-                      Navigator.pop(context, 'OK');
-                      Navigator.pop(context);
-                    });
-                  },
-                ),
-              ],
-            ));
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Añadir al Inventario'),
+        content: const Text(
+            'Se añadirán las cantidades de las pacas al inventario.\n¿Desea continuar?'),
+        actions: [
+          TextButton(
+            child: const Text('No'),
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+          ),
+          TextButton(
+            child: const Text('Si'),
+            onPressed: () async {
+              for (var item in listPaca) {
+                await updateInventory(item);
+                await addOutputs(item);
+                await updateDebtsClient(item);
+              }
+              setState(() {
+                listPaca = [];
+                Navigator.pop(context, 'OK');
+                Navigator.pop(context);
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> updateInventory(Paca item) async {
+    CollectionReference inventory =
+        FirebaseFirestore.instance.collection('Inventory');
+    return inventory.doc(item.getId()).update(
+      {
+        "amount": FieldValue.increment(-item.getAmount()),
+        "updateDate": DateTime.now(),
+      },
+    );
+  }
+
+  Future<void> addOutputs(Paca item) async {
+    CollectionReference outputs =
+        FirebaseFirestore.instance.collection('Outputs');
+    return outputs.add(
+      {
+        'id_paca': item.getId(),
+        'amount': item.getAmount(),
+        'subtotal': item.getPrice(),
+        'total': item.getPrice() * item.getAmount(),
+        'id_client': widget.client.getId(),
+        'date': DateTime.now(),
+      },
+    );
+  }
+
+  Future<void> updateDebtsClient(Paca item) async {
+    List<Map<String, Object>> debts = [];
+    debts.add(
+      {
+        'total': item.getPrice() * item.getAmount(),
+        'date': DateTime.now(),
+      },
+    );
+    CollectionReference clients =
+        FirebaseFirestore.instance.collection('Clients');
+    return clients.doc(widget.client.getId()).update(
+      {
+        'balance': FieldValue.increment(
+          item.getPrice() * item.getAmount(),
+        ),
+        'debts': FieldValue.arrayUnion(debts),
+      },
+    );
   }
 
   // ignore: missing_return
@@ -242,8 +289,9 @@ class _PacaCartState extends State<PacaCart> {
                         setState(() {
                           _dropdownValue = newValue;
                           _priceController.text =
-                              _dropdownValue.getPrice().toString();
-                          _currentAmountPaca = _dropdownValue.getAmount().toInt();
+                              _dropdownValue.getPrice().toStringAsFixed(0);
+                          _currentAmountPaca =
+                              _dropdownValue.getAmount().toInt();
                           _isEnabledFieldPrice = true;
                           _boxDecorationAlert = null;
                           _amountPacas = 1;
@@ -328,16 +376,20 @@ class _PacaCartState extends State<PacaCart> {
                                   setState(() {
                                     int indexMatch = null;
                                     for (int i = 0; i < listPaca.length; i++) {
-                                      if (listPaca[i].getName() == _dropdownValue.getName()) {
+                                      if (listPaca[i].getName() ==
+                                          _dropdownValue.getName()) {
                                         indexMatch = i;
                                       }
                                     }
-                                    if (indexMatch != null){
-                                      if ((_amountPacas + listPaca[indexMatch].getAmount()) < _currentAmountPaca) _amountPacas++;
-                                    } else{
-                                      if (_amountPacas < _currentAmountPaca) _amountPacas++;
+                                    if (indexMatch != null) {
+                                      if ((_amountPacas +
+                                              listPaca[indexMatch]
+                                                  .getAmount()) <
+                                          _currentAmountPaca) _amountPacas++;
+                                    } else {
+                                      if (_amountPacas < _currentAmountPaca)
+                                        _amountPacas++;
                                     }
-                                    
                                   });
                                 },
                                 color: Colors.black,
@@ -356,9 +408,11 @@ class _PacaCartState extends State<PacaCart> {
                     categoryPacas = [];
                     Navigator.pop(context);
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CategoryRegister()));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CategoryRegister(),
+                      ),
+                    );
                   },
                 ),
               ],
